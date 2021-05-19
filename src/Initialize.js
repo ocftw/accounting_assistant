@@ -1,6 +1,7 @@
 // Env init
 
 global.FOSValues = {};
+global.FOSSelfs = {};
 
 // For the date now
 Date.prototype.today = function () {
