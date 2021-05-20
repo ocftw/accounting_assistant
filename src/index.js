@@ -1,9 +1,10 @@
 import v8n from 'v8n';
 import FOSLogger from './service/LoggerService'
-import ControllerService from './service/ControllerService'
 
 import './Initialize';
 import './BaseDependency';
+
+import ControllerExecutor from './service/controller/ControllerExecutor'
 
 let logger = new FOSLogger("main");
 
@@ -16,9 +17,17 @@ global.testLogger = () => {
 }
 
 global.testController = () => {
+
     let controllerClass = FOSValues.controllerService.getController("TestController");
     let controller = new controllerClass();
-    controller.run();
+
+    let parameterMap = new Map();
+    parameterMap.set("paraKey", "paraValue!!!")
+
+    let controllerExecutor = new ControllerExecutor(controller, parameterMap);
+    logger.info(controllerExecutor.execute());
+
+    // controller.run();
 }
 
 global.testConfig = () => {

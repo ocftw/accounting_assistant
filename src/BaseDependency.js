@@ -18,3 +18,5 @@ requireService.addComponent("DependencyService", dependenceService);
 let testService = new TestService();
 
 dependenceService.requireDependency("TestService:test1");
+dependenceService.requireDependency("TestService:test2");
+
