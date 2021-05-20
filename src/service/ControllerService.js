@@ -1,4 +1,4 @@
-import {TestController} from '../controller/TestController'
+import { TestController } from '../controller/TestController'
 
 export default class {
     constructor() {

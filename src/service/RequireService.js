@@ -12,7 +12,7 @@ export default class {
     addComponent(id, object) {
         let self = FOSSelfs.requireService;
 
-        if (self.component.get(id) != undefined) {
+        if (self.component.get(id) !== undefined) {
             self.logger.error("The id \"" + id + "\" is already in requires map");
             throw new Error("The id \"" + id + "\" is already in requires map");
         } else self.component.set(id, object);
@@ -22,7 +22,7 @@ export default class {
         let self = FOSSelfs.requireService;
 
         let requireObject = self.component.get(id);
-        if (requireObject == undefined) {
+        if (requireObject === undefined) {
             self.logger.error("Require id not found: " + id);
             throw new Error("Require id not found: " + id);
         }
