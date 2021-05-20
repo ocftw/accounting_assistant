@@ -3,7 +3,7 @@ import FOSLogger from './service/LoggerService'
 import ControllerService from './service/ControllerService'
 
 import './Initialize';
-import './BaseDependence';
+import './BaseDependency';
 
 let logger = new FOSLogger("main");
 
