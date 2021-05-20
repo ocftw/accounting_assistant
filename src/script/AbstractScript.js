@@ -1,8 +1,9 @@
-class AbstractController {
+class AbstractScript {
     constructor() {
-        if (this.constructor == AbstractController) {
+        if (this.constructor == AbstractScript) {
             throw new Error("Abstract classes can't be instantiated.");
         }
+        this.controllerService = FOSRequire("ControllerService");
     }
 
     run() {
@@ -14,4 +15,4 @@ class AbstractController {
     }
 }
 
-export {AbstractController}
+export {AbstractScript}

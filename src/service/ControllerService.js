@@ -1,4 +1,5 @@
 import { TestController } from '../controller/TestController'
+import ControllerExecutor from './controller/ControllerExecutor'
 
 export default class {
     constructor() {
@@ -12,5 +13,11 @@ export default class {
 
     getController(id) {
         return this.controllers.get(id);
+    }
+
+    getControllerExecutor(id, parameterMap) {
+        let controllerClass = this.getController(id);
+        let controller = new controllerClass();
+        return new ControllerExecutor(controller, parameterMap);
     }
 }

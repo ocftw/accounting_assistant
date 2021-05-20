@@ -1,6 +1,7 @@
 import RequireService from './service/RequireService';
 import ControllerService from './service/ControllerService';
 import DependencyService from './service/DependencyService'
+import ScriptService from './service/ScriptService';
 import TestService from './service/TestService'
 
 let requireService = new RequireService();
@@ -12,6 +13,9 @@ requireService.addComponent("ControllerService", controllerService);
 
 let dependenceService = new DependencyService();
 requireService.addComponent("DependencyService", dependenceService);
+
+let scriptService = new ScriptService();
+requireService.addComponent("ScriptService", scriptService);
 
 //Test
 

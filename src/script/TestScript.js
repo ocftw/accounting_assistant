@@ -1,10 +1,10 @@
-import { AbstractController } from './AbstractController';
 import v8n from 'v8n';
 import ParameterDefine from '../util/ParameterDefine'
 import FOSLogger from '../service/LoggerService';
+import ControllerService from '../service/ControllerService';
+import { AbstractScript } from './AbstractScript';
 
-class TestController extends AbstractController {
-
+class TestScript extends AbstractScript {
     constructor() {
         super();
         this.parameterDefineMap = new Map();
@@ -17,20 +17,19 @@ class TestController extends AbstractController {
     }
 
     run() {
-        let logger = new FOSLogger("TestController");
-        logger.info("Test Controller Run");
-        logger.info(FOSRequire("config").config.get("sys.version"));
+        let logger = new FOSLogger("TestScript");
+        logger.info("Test Script Run!!");
         logger.info("The para is " + this.parameterDefineMap.get("paraKey").object);
-        return this.parameterDefineMap.get("paraKey").object + " exec~";
+        
+
+        let parameterMap = new Map();
+        parameterMap.set("paraKey", this.parameterDefineMap.get("paraKey").object);
+        return this.controllerService.getControllerExecutor("TestController", parameterMap).execute();;
     }
 
     static getName() {
-        return "TestController";
-    }
-
-    static getDependencies() {
-        return ["TestService:test1", "TestService:test2"]
+        return "TestScript";
     }
 }
 
-export { TestController };
+export { TestScript };

@@ -4,8 +4,6 @@ import FOSLogger from './service/LoggerService'
 import './Initialize';
 import './BaseDependency';
 
-import ControllerExecutor from './service/controller/ControllerExecutor'
-
 let logger = new FOSLogger("main");
 
 global.testV8n = () => Logger.log(v8n().number().test("teasd"));
@@ -17,17 +15,18 @@ global.testLogger = () => {
 }
 
 global.testController = () => {
-
-    let controllerClass = FOSValues.controllerService.getController("TestController");
-    let controller = new controllerClass();
-
     let parameterMap = new Map();
     parameterMap.set("paraKey", "paraValue!!!")
 
-    let controllerExecutor = new ControllerExecutor(controller, parameterMap);
+    let controllerExecutor = FOSValues.controllerService.getControllerExecutor(controller, parameterMap);
     logger.info(controllerExecutor.execute());
+}
 
-    // controller.run();
+global.testScript = () => {
+    let parameterMap = new Map();
+    parameterMap.set("paraKey", "scriptValue!!!")
+
+    logger.info(FOSRequire("ScriptService").getScriptExecutor("TestScript", parameterMap).execute());
 }
 
 global.testConfig = () => {
