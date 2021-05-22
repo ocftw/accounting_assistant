@@ -13,10 +13,16 @@ class AbstractController {
         throw new Error("Method 'getName()' must be implemented.");
     }
 
+    /**
+     * @returns {string}
+     */
     static getDependencies() {
         return "None";
     }
 
+    /**
+     * @returns {string}
+     */
     static getType() {
         return "Controller";
     }

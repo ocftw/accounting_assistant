@@ -1,5 +1,5 @@
 const LoggerType = {
-    CONSOLE: "CONSOLE",
+    G_CONSOLE: "G_CONSOLE",
     SLACK_CHANNEL: "SLACK_CHANNEL",
 }
 

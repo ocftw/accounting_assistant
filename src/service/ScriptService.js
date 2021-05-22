@@ -11,6 +11,10 @@ export default class {
         this.controllers.set(id, object);
     }
 
+    hasScript(id) {
+        return this.controllers.has(id);
+    }
+
     getScript(id) {
         return this.controllers.get(id);
     }

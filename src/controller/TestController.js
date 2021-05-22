@@ -10,7 +10,6 @@ class TestController extends AbstractController {
         this.parameterDefineMap = new Map();
         this.parameterDefineMap.set("paraKey",
             new ParameterDefine((value, logger) => {
-                logger.info("parameter \"" + value + "\" verified, result is " + v8n().string().test(value));
                 return v8n().string().test(value);
             }, true)
         );

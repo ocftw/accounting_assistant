@@ -33,3 +33,11 @@ global.testConfig = () => {
     Logger.log([...FOSRequire("config").config.entries()]);
     console.timeEnd("[init] read config");
 }
+
+global.testEndpoint = () => {
+    console.time("testEndpoint");
+    let parameterMap = new Map();
+    parameterMap.set("paraKey", "endpointValue");
+    FOSRequire("EndpointService").call("script:TestScript", parameterMap, "testEndpoint");
+    console.timeEnd("testEndpoint");
+}

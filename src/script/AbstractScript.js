@@ -6,7 +6,7 @@ class AbstractScript {
         if (this.constructor == AbstractScript) {
             throw new Error("Abstract classes can't be instantiated.");
         }
-        
+
         /**@type {ControllerService} controllerService */
         this.controllerService = (/**@type {ControllerService} controllerService */FOSRequire("ControllerService"));
     }
@@ -24,10 +24,16 @@ class AbstractScript {
         this.controllerService.getControllerExecutor(id, parameterMap).execute();
     }
 
+    /**
+     * @returns {string}
+     */
     static getName() {
         throw new Error("Method 'getName()' must be implemented.");
     }
 
+    /**
+     * @returns {string}
+     */
     static getType() {
         return "Script";
     }
