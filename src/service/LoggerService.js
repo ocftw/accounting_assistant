@@ -6,26 +6,41 @@ export default class {
         this.loggerType = this.FOSConfig.config.get("sys.log.type") || LoggerType.CONSOLE;
 
         switch (this.loggerType) {
-            case LoggerType.CONSOLE:
+            case LoggerType.G_CONSOLE:
                 this.debug = (message) => {
-                    Logger.log(new Date().today() + " " + new Date().timeNow() + " [DEBUG] [" + source.padStart(17) + "]: " + message);
+                    let sessionSource = this.FOSConfig.session.session + "-" + this.FOSConfig.session.source;
+                    console.log(this.getDefaultMessageFormat(message, sessionSource, source));
                 }
 
                 this.info = (message) => {
-                    Logger.log(new Date().today() + " " + new Date().timeNow() + " [ INFO] [" + source.padStart(17) + "]: " + message);
+                    let sessionSource = this.FOSConfig.session.session + "-" + this.FOSConfig.session.source;
+                    console.info(this.getDefaultMessageFormat(message, sessionSource, source));
                 }
 
                 this.warn = (message) => {
-                    Logger.log(new Date().today() + " " + new Date().timeNow() + " [ WARN] [" + source.padStart(17) + "]: " + message);
+                    let sessionSource = this.FOSConfig.session.session + "-" + this.FOSConfig.session.source;
+                    console.warn(this.getDefaultMessageFormat(message, sessionSource, source));
                 }
 
                 this.error = (message) => {
-                    Logger.log(new Date().today() + " " + new Date().timeNow() + " [ERROR] [" + source.padStart(17) + "]: " + message);
+                    let sessionSource = this.FOSConfig.session.session + "-" + this.FOSConfig.session.source;
+                    console.error(this.getDefaultMessageFormat(message, sessionSource, source));
                 }
 
                 break;
             default:
                 break;
         }
+    }
+    
+    getDefaultMessageFormat(message, sessionSource, source, level) {
+        if (typeof level === "undefined") {
+            return "[" + sessionSource.padStart(21) + "] " + source.padEnd(20) + ": " + message;
+        }
+        return level.padStart(5) + "---" + "[" + sessionSource.padStart(21) + "] " + source.padEnd(20) + ": " + message;
+    }
+
+    getDateTime() {
+        return new Date().today() + " " + new Date().timeNow();
     }
 }

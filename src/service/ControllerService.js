@@ -11,6 +11,10 @@ export default class {
         this.controllers.set(id, object);
     }
 
+    hasController(id) {
+        return this.controllers.has(id);
+    }
+
     getController(id) {
         return this.controllers.get(id);
     }

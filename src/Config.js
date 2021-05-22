@@ -1,5 +1,5 @@
 //@ts-check
-
+import { customAlphabet } from 'nanoid/non-secure'
 import GetAllKeyValueOption from './util/GetAllKeyValueOption';
 import sheetUtil from './util/SheetUtil'
 
@@ -13,6 +13,12 @@ const secret = {
     config:{
         sheet: "1IDitf2M5YL_HEaw-GCSuYNalAIOqomRcaVrjtAmTKi4"
     }
+}
+
+const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 5)
+const session = {
+    source: "unknow",
+    session: nanoid(),
 }
 
 const configSpreadsheet = SpreadsheetApp.openById(secret.config.sheet);
@@ -49,5 +55,6 @@ const config = sheetUtil.getAllKeyValue(configSpreadsheet.getSheetByName("global
 
 export default {
     secret: secret,
+    session: session,
     config: config
 }
