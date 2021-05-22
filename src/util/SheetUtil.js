@@ -18,7 +18,6 @@ export default class {
         
         if (options instanceof Array) {
             values.forEach(element => {
-                Logger.log(element);
                 options.forEach(option => {
                     if (option.key === null || element[0] === option.key) {
                         let optionReturn = option.callback(element[1], element[0], map);
@@ -30,7 +29,6 @@ export default class {
             });
         } else {
             values.forEach(element => {
-                Logger.log(element);
                 map.set(element[0], element[1]);
             });        
         }

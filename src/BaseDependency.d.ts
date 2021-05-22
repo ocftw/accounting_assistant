@@ -1,0 +1,1 @@
+declare function FOSRequire(str: string): Object

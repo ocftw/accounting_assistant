@@ -1,7 +1,6 @@
 import v8n from 'v8n';
 import ParameterDefine from '../util/ParameterDefine'
 import FOSLogger from '../service/LoggerService';
-import ControllerService from '../service/ControllerService';
 import { AbstractScript } from './AbstractScript';
 
 class TestScript extends AbstractScript {
@@ -21,11 +20,10 @@ class TestScript extends AbstractScript {
         logger.info("Test Script Run!!");
         logger.info("The para is " + this.parameterDefineMap.get("paraKey").object);
         
-
         let parameterMap = new Map();
         parameterMap.set("paraKey", this.parameterDefineMap.get("paraKey").object);
         logger.info("Test Script call TestController");
-        return this.controllerService.getControllerExecutor("TestController", parameterMap).execute();;
+        return this.runController("TestController", parameterMap);
     }
 
     static getName() {
