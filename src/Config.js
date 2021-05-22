@@ -1,3 +1,6 @@
+//@ts-check
+
+import GetAllKeyValueOption from './util/GetAllKeyValueOption';
 import sheetUtil from './util/SheetUtil'
 
 const secret = {
@@ -12,7 +15,37 @@ const secret = {
     }
 }
 
-const config = sheetUtil.getAllKeyValue(SpreadsheetApp.openById(secret.config.sheet).getSheetByName("global"))
+const configSpreadsheet = SpreadsheetApp.openById(secret.config.sheet);
+const config = sheetUtil.getAllKeyValue(configSpreadsheet.getSheetByName("global"),[
+    new GetAllKeyValueOption("import", (importValue, importKey, mapInNow) => {
+        let importPrefixFlag = false;
+        let importPrefix;
+        if (mapInNow.has(importValue + ".prefix")) {
+            let rawMap = sheetUtil.getAllKeyValue(configSpreadsheet.getSheetByName(importValue), null);
+            let prefix = mapInNow.get(importValue + ".prefix");
+            let returnMap = new Map();
+            rawMap.forEach((value, key) => {
+                returnMap.set(prefix + key, value);
+            })
+            return returnMap;
+        } else return sheetUtil.getAllKeyValue(configSpreadsheet.getSheetByName(importValue), [
+            new GetAllKeyValueOption(null, (importValue, importKey, mapInNow) => {
+                if (importKey === "prefix") {
+                    importPrefixFlag = true;
+                    importPrefix = importValue;
+                    return null;
+                } else if (importPrefixFlag) {
+                    let returnMap = new Map();
+                    returnMap.set(importPrefix + importKey, importValue);
+                    return returnMap;
+                } else {
+                    let returnMap = new Map();
+                    returnMap.set(importKey, importValue);
+                    return returnMap;
+                }
+            })
+        ]);
+    })]);
 
 export default {
     secret: secret,
