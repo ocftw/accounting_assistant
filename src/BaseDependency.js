@@ -21,6 +21,6 @@ requireService.addComponent("ScriptService", scriptService);
 
 let testService = new TestService();
 
-dependenceService.requireDependency("TestService:test1");
-dependenceService.requireDependency("TestService:test2");
+// dependenceService.requireDependency("TestService:test1");
+// dependenceService.requireDependency("TestService:test2");
 

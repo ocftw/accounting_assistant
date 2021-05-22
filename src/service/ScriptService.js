@@ -17,7 +17,6 @@ export default class {
 
     getScriptExecutor(id, parameterMap) {
         let controllerClass = this.getScript(id);
-        let controller = new controllerClass();
-        return new ControllerExecutor(controller, parameterMap);
+        return new ControllerExecutor(controllerClass, parameterMap);
     }
 }

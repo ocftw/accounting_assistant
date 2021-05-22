@@ -10,7 +10,7 @@ class TestController extends AbstractController {
         this.parameterDefineMap = new Map();
         this.parameterDefineMap.set("paraKey",
             new ParameterDefine((value, logger) => {
-                logger.info(value + " checked!! is " + v8n().string().test(value));
+                logger.info("parameter \"" + value + "\" verified, result is " + v8n().string().test(value));
                 return v8n().string().test(value);
             }, true)
         );
@@ -19,9 +19,8 @@ class TestController extends AbstractController {
     run() {
         let logger = new FOSLogger("TestController");
         logger.info("Test Controller Run");
-        logger.info(FOSRequire("config").config.get("sys.version"));
         logger.info("The para is " + this.parameterDefineMap.get("paraKey").object);
-        return this.parameterDefineMap.get("paraKey").object + " exec~";
+        return this.parameterDefineMap.get("paraKey").object + " controller return";
     }
 
     static getName() {
@@ -29,7 +28,7 @@ class TestController extends AbstractController {
     }
 
     static getDependencies() {
-        return ["TestService:test1", "TestService:test2"]
+        return ["TestService:dependency1", "TestService:dependency2"]
     }
 }
 

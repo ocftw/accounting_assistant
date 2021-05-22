@@ -23,6 +23,7 @@ global.testController = () => {
 }
 
 global.testScript = () => {
+    logger.info("testScript endpoint called");
     let parameterMap = new Map();
     parameterMap.set("paraKey", "scriptValue!!!")
 

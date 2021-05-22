@@ -17,7 +17,6 @@ export default class {
 
     getControllerExecutor(id, parameterMap) {
         let controllerClass = this.getController(id);
-        let controller = new controllerClass();
-        return new ControllerExecutor(controller, parameterMap);
+        return new ControllerExecutor(controllerClass, parameterMap);
     }
 }

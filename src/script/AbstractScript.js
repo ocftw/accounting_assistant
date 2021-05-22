@@ -13,6 +13,10 @@ class AbstractScript {
     static getName() {
         throw new Error("Method 'getName()' must be implemented.");
     }
+
+    static getType() {
+        return "Script";
+    }
 }
 
 export {AbstractScript}

@@ -12,6 +12,14 @@ class AbstractController {
     static getName() {
         throw new Error("Method 'getName()' must be implemented.");
     }
+
+    static getDependencies() {
+        return "None";
+    }
+
+    static getType() {
+        return "Controller";
+    }
 }
 
 export {AbstractController}

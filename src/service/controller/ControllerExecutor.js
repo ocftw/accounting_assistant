@@ -1,7 +1,9 @@
 import FOSLogger from '../LoggerService'
 
 export default class {
-    constructor(controller, parameterMap) {
+    constructor(controllerClass, parameterMap) {
+        let controller = new controllerClass();
+        this.controllerClass = controllerClass;
         this.controller = controller;
         this.parameterMap = parameterMap;
         this.logger = new FOSLogger("ControllerExecutor");
@@ -9,6 +11,7 @@ export default class {
 
     execute() {
         this.verifyAndPutParameters();
+        if (this.controllerClass.getType() === "Controller") this.loadDependency();
         return this.controller.run();
     }
 
@@ -32,5 +35,11 @@ export default class {
 
             parameterDefine.object = this.parameterMap.get(id);
         }
+    }
+
+    loadDependency() {
+        if (this.controllerClass.getDependencies() === "None") return;
+        let requireService = FOSRequire("DependencyService");
+        requireService.requireDependencies(this.controllerClass.getDependencies());
     }
 }

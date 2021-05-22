@@ -10,7 +10,7 @@ class TestScript extends AbstractScript {
         this.parameterDefineMap = new Map();
         this.parameterDefineMap.set("paraKey",
             new ParameterDefine((value, logger) => {
-                logger.info(value + " checked!! is " + v8n().string().test(value));
+                logger.info("parameter \"" + value + "\" verified, result is " + v8n().string().test(value));
                 return v8n().string().test(value);
             }, true)
         );
@@ -24,6 +24,7 @@ class TestScript extends AbstractScript {
 
         let parameterMap = new Map();
         parameterMap.set("paraKey", this.parameterDefineMap.get("paraKey").object);
+        logger.info("Test Script call TestController");
         return this.controllerService.getControllerExecutor("TestController", parameterMap).execute();;
     }
 
