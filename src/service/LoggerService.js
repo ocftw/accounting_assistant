@@ -7,9 +7,14 @@ export default class {
 
         switch (this.loggerType) {
             case LoggerType.G_CONSOLE:
-                this.debug = (message) => {
-                    let sessionSource = this.FOSConfig.session.session + "-" + this.FOSConfig.session.source;
-                    console.log(this.getDefaultMessageFormat(message, sessionSource, source));
+
+                if (this.FOSConfig.config.get("debug")) {
+                    this.debug = (message) => {
+                        let sessionSource = "Dev-" + this.FOSConfig.session.session + "-" + this.FOSConfig.session.source;
+                        console.log(this.getDefaultMessageFormat(message, sessionSource, source));
+                    }    
+                } else {
+                    this.debug = (message) => {}
                 }
 
                 this.info = (message) => {
@@ -35,7 +40,7 @@ export default class {
     
     getDefaultMessageFormat(message, sessionSource, source, level) {
         if (typeof level === "undefined") {
-            return "[" + sessionSource.padStart(21) + "] " + source.padEnd(20) + ": " + message;
+            return "[" + sessionSource.padStart(23) + "] " + source.padEnd(20) + ": " + message;
         }
         return level.padStart(5) + "---" + "[" + sessionSource.padStart(21) + "] " + source.padEnd(20) + ": " + message;
     }
