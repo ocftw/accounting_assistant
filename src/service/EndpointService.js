@@ -28,15 +28,17 @@ export default class {
         if (id.startsWith("script:")) {
             id = id.substring(7);
             if (this.scriptService.hasScript(id)) {
-                this.logger.debug("Endpoint called the script: " + id);
-                if (typeof parameterMap !== "undefined") this.logger.debug("With parameters: " + [...parameterMap.entries()]);
+                let message = "Endpoint called the script: " + id
+                if (typeof parameterMap !== "undefined") message += " with parameters -> " + [...parameterMap.entries()]
+                this.logger.debug(message);
                 return this.scriptService.getScriptExecutor(id, parameterMap).execute();
             }
         } else if (id.startsWith("controller:")) {
             id = id.substring(11);
             if (this.controllerService.hasController(id)) {
-                this.logger.debug("Endpoint called the controller: " + id);
-                if (typeof parameterMap !== "undefined") this.logger.debug("With parameters" + [...parameterMap.entries()]);
+                let message = "Endpoint called the script: " + id
+                if (typeof parameterMap !== "undefined") message += " with parameters -> " + [...parameterMap.entries()]
+                this.logger.debug(message);
                 return this.controllerService.getControllerExecutor(id, parameterMap).execute();
             }
         }
