@@ -1,17 +1,20 @@
 //@ts-check
-
 import ControllerService from "./ControllerService";
 import ScriptService from "./ScriptService";
-import FOSLogger from './LoggerService';
-import Config from '../Config';
+import AbstractService from "./AbstractService";
 
-export default class {
+export default class extends AbstractService{
+
+    static getName() {
+        return "EndpointService"
+    }
+
     constructor() {
+        super();
         /**@type {ControllerService} controllerService */
-        this.controllerService = (/**@type {ControllerService} */ FOSRequire("ControllerService"));
+        this.controllerService = (FOSRequire("ControllerService"));
         /**@type {ScriptService} scriptService */
-        this.scriptService = (/**@type {ScriptService} */ FOSRequire("ScriptService"));
-        this.logger = new FOSLogger("EndpointService");
+        this.scriptService = (FOSRequire("ScriptService"));
     }
 
     /**
@@ -21,9 +24,7 @@ export default class {
      * @param {string} source endpoint source name
      */
     call(id, parameterMap, source) {
-        /**@type {Config} */
-        let config = (/**@type {Config} */FOSRequire("config"));
-        config.session.source = source;
+        this.config.session.source = source;
         
         if (id.startsWith("script:")) {
             id = id.substring(7);

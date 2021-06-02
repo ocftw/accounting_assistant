@@ -11,7 +11,6 @@ export default class {
 
     registeDependency(id, method, dependSelf, parent) {
         let self = FOSSelfs.dependencyService;
-
         let dependency = new DependencyUnit(id, method, dependSelf, parent);
 
         if (self.dependencys.has(id)) {

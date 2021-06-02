@@ -1,8 +1,16 @@
+//@ts-check
 import { TestController } from '../controller/TestController'
+import AbstractService from './AbstractService';
 import ControllerExecutor from './controller/ControllerExecutor'
 
-export default class {
+export default class extends AbstractService{
+
+    static getName() {
+        return "ControllerService";
+    }
+
     constructor() {
+        super();
         this.controllers = new Map();
         this.addController(TestController.getName(), TestController);
     }
