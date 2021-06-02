@@ -1,6 +1,7 @@
 import RequireService from './service/RequireService';
 import ControllerService from './service/ControllerService';
-import DependencyService from './service/DependencyService'
+import DependencyService from './service/DependencyService';
+import DriveService from './service/DriveService';
 import ScriptService from './service/ScriptService';
 import TestService from './service/TestService'
 import EndpointService from './service/EndpointService';
@@ -17,13 +18,17 @@ FOSLogger.info("Initializing basic dependencies");
 
 let requireService = new RequireService();
 global.FOSRequire = requireService.require;
+requireService.addComponent("FOSConfig", FOSValues.FOSConfig);
+
+let dependenceService = new DependencyService();
+requireService.addComponent("DependencyService", dependenceService);
 
 let controllerService = new ControllerService();
 global.FOSValues.controllerService = controllerService;
 requireService.addComponent("ControllerService", controllerService);
 
-let dependenceService = new DependencyService();
-requireService.addComponent("DependencyService", dependenceService);
+let driveService = new DriveService();
+requireService.addComponent("DriveService", driveService);
 
 let scriptService = new ScriptService();
 requireService.addComponent("ScriptService", scriptService);

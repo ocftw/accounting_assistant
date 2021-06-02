@@ -17,6 +17,21 @@ export default class AbstractService {
         this.dependencyService = (FOSRequire("DependencyService"));
     }
 
+    /**
+     * @returns {boolean}
+     */
+    isDevelopment() {
+        return this.getConfigValue("sys.env.name") === "Development";
+    }
+
+    /**
+     * getConfigValue
+     * @param {string} key config key
+     */
+    getConfigValue(key) {
+        return this.config.config.get(key);
+    }
+
     static getName() {
         throw new Error("Method 'getName()' must be implemented.");
     }
