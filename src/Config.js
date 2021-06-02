@@ -53,8 +53,15 @@ const config = sheetUtil.getAllKeyValue(configSpreadsheet.getSheetByName("global
         ]);
     })]);
 
+const getLocalConfig = (name) => {
+    return (key) => {
+        return config.get(name + "." + key);
+    }
+}
+
 export default {
     secret: secret,
     session: session,
-    config: config
+    config: config,
+    getLocalConfig: getLocalConfig,
 }
