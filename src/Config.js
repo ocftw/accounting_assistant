@@ -1,6 +1,6 @@
 //@ts-check
 import { customAlphabet } from 'nanoid/non-secure'
-import GetAllKeyValueOption from './util/GetAllKeyValueOption';
+import SheetUtil from './util/SheetUtil';
 import sheetUtil from './util/SheetUtil'
 
 const secret = {
@@ -15,47 +15,79 @@ const secret = {
     }
 }
 
-const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 5)
+const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 5);
 const session = {
     source: "unknow",
     session: nanoid(),
 }
 
 const configSpreadsheet = SpreadsheetApp.openById(secret.config.sheet);
-const config = sheetUtil.getAllKeyValue(configSpreadsheet.getSheetByName("global"),[
-    new GetAllKeyValueOption("import", (importValue, importKey, mapInNow) => {
-        let importPrefixFlag = false;
-        let importPrefix;
-        if (mapInNow.has(importValue + ".prefix")) {
-            let rawMap = sheetUtil.getAllKeyValue(configSpreadsheet.getSheetByName(importValue), null);
-            let prefix = mapInNow.get(importValue + ".prefix");
-            let returnMap = new Map();
-            rawMap.forEach((value, key) => {
-                returnMap.set(prefix + key, value);
-            })
-            return returnMap;
-        } else return sheetUtil.getAllKeyValue(configSpreadsheet.getSheetByName(importValue), [
-            new GetAllKeyValueOption(null, (importValue, importKey, mapInNow) => {
-                if (importKey === "prefix") {
-                    importPrefixFlag = true;
-                    importPrefix = importValue;
-                    return null;
-                } else if (importPrefixFlag) {
-                    let returnMap = new Map();
-                    returnMap.set(importPrefix + importKey, importValue);
-                    return returnMap;
-                } else {
-                    let returnMap = new Map();
-                    returnMap.set(importKey, importValue);
-                    return returnMap;
-                }
-            })
-        ]);
-    })]);
+const config = sheetUtil.getAllKeyValue(configSpreadsheet.getSheetByName("global"),
+    sheetUtil.prefixAndImportOptions(configSpreadsheet));
 
+/**
+ * getLocalConfig
+ * @param {string} name service name
+ */
 const getLocalConfig = (name) => {
     return (key) => {
         return config.get(name + "." + key);
+    }
+}
+
+/**
+ * hasLocalConfig
+ * @param {string} name service name
+ */
+const hasLocalConfig = (name) => {
+    return (key) => {
+        return config.has(name + "." + key);
+    }
+}
+
+const createConfig = () => {
+    return (key, value) => {
+        let sheet = configSpreadsheet.getSheetByName("global");
+        if (!config.has(key)) SheetUtil.insertKeyValue(sheet, key, value);
+    }
+}
+
+/**
+ * createLocalConfig
+ * @param {string} name service name
+ */
+const createLocalConfig = (name) => {
+    return (key, value) => {
+        if (configSpreadsheet.getSheetByName(name) != null) {
+            let sheet = configSpreadsheet.getSheetByName(name);
+            if (!config.has(key)) SheetUtil.insertKeyValue(sheet, key, value);
+        } else {
+            let sheet = configSpreadsheet.getSheetByName("global");
+            if (!config.has(key)) SheetUtil.insertKeyValue(sheet, name + "." + key, value);
+        }
+    }
+}
+
+const updateConfig = () => {
+    return (key, value) => {
+        let sheet = configSpreadsheet.getSheetByName("global");
+        SheetUtil.safeInsertKeyValue(sheet, key, value, true);
+    }
+}
+
+/**
+ * updateLocalConfig
+ * @param {string} name service name
+ */
+const updateLocalConfig = (name) => {
+    return (key, value) => {
+        if (configSpreadsheet.getSheetByName(name) != null) {
+            let sheet = configSpreadsheet.getSheetByName(name);
+            SheetUtil.safeInsertKeyValue(sheet, key, value, true);
+        } else {
+            let sheet = configSpreadsheet.getSheetByName("global");
+            SheetUtil.safeInsertKeyValue(sheet, name + "." + key, value, true);
+        }
     }
 }
 
@@ -64,4 +96,9 @@ export default {
     session: session,
     config: config,
     getLocalConfig: getLocalConfig,
+    hasLocalConfig: hasLocalConfig,
+    createConfig: createConfig,
+    createLocalConfig: createLocalConfig,
+    updateConfig: updateConfig,
+    updateLocalConfig: updateLocalConfig,
 }

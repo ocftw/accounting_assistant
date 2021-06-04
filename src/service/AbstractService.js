@@ -12,6 +12,8 @@ export default class AbstractService {
         this.config = (FOSRequire("config"));
         // @ts-ignore
         this.getServiceConfig = this.config.getLocalConfig(this.constructor.getName());
+        // @ts-ignore
+        this.hasServiceConfig = this.config.hasLocalConfig(this.constructor.getName());
 
         /**@type {DependencyService}} dependencyService */
         this.dependencyService = (FOSRequire("DependencyService"));
