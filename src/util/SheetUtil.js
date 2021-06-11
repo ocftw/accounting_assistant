@@ -33,9 +33,9 @@ export default class SheetUtil {
                     "First key should be a string \"version\" but is " + version[0]);
             }
 
-            if (version[1] === null) {
+            if (version[1] === "") {
                 throw new Error("The key-value version control is not used, or has a wrong data format. " +
-                    "The value cannot be null");
+                    "The version name cannot be empty");
             }
 
             let keyValueVersion = new KeyValueVersion(version[1], i * 2 + 1);
