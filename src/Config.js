@@ -28,6 +28,7 @@ const config = sheetUtil.getAllKeyValue(configSpreadsheet.getSheetByName("global
 /**
  * getLocalConfig
  * @param {string} name service name
+ * @returns {(key:string) => string}
  */
 const getLocalConfig = (name) => {
     return (key) => {
@@ -38,6 +39,7 @@ const getLocalConfig = (name) => {
 /**
  * hasLocalConfig
  * @param {string} name service name
+ * @returns {(key:string) => boolean}
  */
 const hasLocalConfig = (name) => {
     return (key) => {
@@ -45,6 +47,9 @@ const hasLocalConfig = (name) => {
     }
 }
 
+/**
+ * @returns {(key:string, value:string) => void}
+ */
 const createConfig = () => {
     return (key, value) => {
         let sheet = configSpreadsheet.getSheetByName("global");
@@ -55,6 +60,7 @@ const createConfig = () => {
 /**
  * createLocalConfig
  * @param {string} name service name
+ * @returns {(key:string, value:string) => void}
  */
 const createLocalConfig = (name) => {
     return (key, value) => {
@@ -68,6 +74,9 @@ const createLocalConfig = (name) => {
     }
 }
 
+/**
+ * @returns {(key:string, value:string) => void}
+ */
 const updateConfig = () => {
     return (key, value) => {
         let sheet = configSpreadsheet.getSheetByName("global");
@@ -78,6 +87,7 @@ const updateConfig = () => {
 /**
  * updateLocalConfig
  * @param {string} name service name
+ * @returns {(key:string, value:string) => void}
  */
 const updateLocalConfig = (name) => {
     return (key, value) => {
@@ -95,6 +105,7 @@ export default {
     secret: secret,
     session: session,
     config: config,
+    configSpreadsheet: configSpreadsheet,
     getLocalConfig: getLocalConfig,
     hasLocalConfig: hasLocalConfig,
     createConfig: createConfig,

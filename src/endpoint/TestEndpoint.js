@@ -33,6 +33,7 @@ global.testConfig = () => {
     console.time("[init] read config");
     Logger.log(FOSRequire("config").secret.admin.name);
     Logger.log([...FOSRequire("config").config.entries()]);
+    Logger.log(ConfigUtil.getSecondClassArray("endpoint", FOSRequire("config").config));
     console.timeEnd("[init] read config");
 }
 
