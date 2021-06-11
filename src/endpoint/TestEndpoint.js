@@ -1,5 +1,7 @@
 import v8n from 'v8n';
 import FOSLogger from '../service/LoggerService';
+import ConfigUtil from '../util/ConfigUtil';
+import SheetUtil from '../util/SheetUtil';
 
 let logger = new FOSLogger("TestEndPoint");
 
@@ -34,10 +36,25 @@ global.testConfig = () => {
     console.timeEnd("[init] read config");
 }
 
+global.testLocalConfig = () => {
+    console.time("[init] read config");
+    Logger.log([...FOSRequire("config").config.entries()]);
+    let localConfig = FOSRequire("config").getLocalConfig("endpoint");
+    Logger.log(localConfig("test"));
+    console.timeEnd("[init] read config");
+}
+
 global.testEndpoint = () => {
     console.time("testEndpoint");
     let parameterMap = new Map();
     parameterMap.set("paraKey", "endpointValue");
     FOSRequire("EndpointService").call("script:TestScript", parameterMap, "testEndpoint");
     console.timeEnd("testEndpoint");
+}
+
+global.testVersionKeyValue = () => {
+    console.time("testVersionKeyValue");
+    let configSheet = FOSRequire("config").configSpreadsheet.getSheetByName("TestVersion");
+    console.log(...SheetUtil.getAllKeyValueVersion(configSheet));
+    console.timeEnd("testVersionKeyValue");
 }
