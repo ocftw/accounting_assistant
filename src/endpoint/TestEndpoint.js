@@ -45,6 +45,11 @@ global.testLocalConfig = () => {
     console.timeEnd("[init] read config");
 }
 
+global.testDrive = () => {
+    Logger.log(FOSRequire("DriveService").checkFolderAvailable("Repository"));
+    Logger.log(FOSRequire("DriveService").checkFolderAvailable("Repository12345"));
+}
+
 global.testEndpoint = () => {
     console.time("testEndpoint");
     let parameterMap = new Map();
