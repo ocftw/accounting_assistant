@@ -1,7 +1,11 @@
 import v8n from 'v8n';
+import EntityUnit from '../service/entity/EntityUnit';
 import FOSLogger from '../service/LoggerService';
 import ConfigUtil from '../util/ConfigUtil';
 import SheetUtil from '../util/SheetUtil';
+
+import findKey from 'lodash/findKey'
+import EntityKeyValueWrapper from '../service/entity/EntityKeyValueWrapper';
 
 let logger = new FOSLogger("TestEndPoint");
 
@@ -63,4 +67,19 @@ global.testVersionKeyValue = () => {
     let configSheet = FOSRequire("config").configSpreadsheet.getSheetByName("TestVersion");
     console.log(...SheetUtil.getAllKeyValueVersion(configSheet));
     console.timeEnd("testVersionKeyValue");
+}
+
+global.testEntityUtilToString = () => {
+    let entity = new EntityUnit(null, "test", null);
+    let entityKey = new EntityUnit(null, "entityKey", null);
+    let entityValue = new EntityUnit(null, "entityValue", null);
+    let entityWrapper = new EntityKeyValueWrapper(entityKey, entityValue);
+    let map = new Map();
+    map.set("entityKey", entityWrapper);
+
+    console.log(map.get("entityKey").toString());
+    console.log(entity);
+    console.log(entity + "12345");
+    console.log(entity == "test");
+    console.log(entity === "test");
 }

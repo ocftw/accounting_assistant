@@ -23,7 +23,7 @@
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/preset-env": "^7.12.16",
-    "@google/clasp": "^2.0.1",
+    "@google/clasp": "^2.3.0",
     "@types/google-apps-script": "^1.0.33",
     "@types/lodash": "^4.14.170",
     "babel-eslint": "^10.1.0",

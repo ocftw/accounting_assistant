@@ -3,6 +3,7 @@ import GetAllKeyValueOption from './GetAllKeyValueOption'
 import KeyValueVersion from './KeyValueVersion';
 import chunk from 'lodash/chunk'
 import findIndex from 'lodash/findIndex'
+import EntityUnit from '../service/entity/EntityUnit';
 
 export default class SheetUtil {
 
@@ -50,39 +51,33 @@ export default class SheetUtil {
             }
         }
 
-        // for (let i = 0; i < versionList.length; i++){
-        //     if (!(i % 2 === 0 && versionList[i] === "version")) {
-        //         throw new Error("The key-value version control is not used, or has a wrong data format. " +
-        //             "First key should be a string \"version\" but is " + versionList[i]);
-        //     } else if (!(i % 2 === 1 && versionList[i] !== null)) {
-        //         throw new Error("The key-value version control is not used, or has a wrong data format. " +
-        //             "The " + i + "th value cannot be null");
-        //     }
-        // }
-
-        // for (let i = 0; i < versionList.length; i + 2) {
-        //     let keyValueVersion = new KeyValueVersion(versionList[i + 1], i);
-        // }
-
         return keyValueVersionList;
     }
 
     /**
      * getAllKeyValue
-     * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet - The Financial Operating System default load sheet name
+     * @param {GoogleAppsScript.Spreadsheet.Sheet | [[EntityUnit]]} sheet - Spreadsheet or EntityUnit two-dimensional array
      * @param {?[GetAllKeyValueOption]} options
      * @param {number} offset Number of starting column (key)
      * @returns {Map<string, string>}
      */
-    static getAllKeyValue(sheet, options, offset=1){
-        let values = sheet.getRange(2, offset, sheet.getLastRow() - 1, 2).getValues();
+    static getAllKeyValue(sheet, options, offset = 1) {
+        let values;
+
+        if (sheet instanceof Array) {
+            values = sheet;
+        } else {
+            // @ts-ignore
+            values = sheet.getRange(2, offset, sheet.getLastRow() - 1, 2).getValues();
+        }
+
         let map = new Map();
         
         if (options instanceof Array) {
             values.forEach(element => {
-                if (element[0] === "") return;
+                if (element[0] == "") return;
                 options.forEach(option => {
-                    if (option.key === null || element[0] === option.key) {
+                    if (option.key === null || element[0] == option.key) {
                         let optionReturn = option.callback(element[1], element[0], map);
                         if (optionReturn instanceof Map) {
                             map = new Map([...map, ...optionReturn]);
