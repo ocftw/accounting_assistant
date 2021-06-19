@@ -4,6 +4,8 @@ import KeyValueVersion from './KeyValueVersion';
 import chunk from 'lodash/chunk'
 import findIndex from 'lodash/findIndex'
 import EntityUnit from '../service/entity/EntityUnit';
+import GetEntityKeyValueOption from './GetEntityKeyValueOption';
+import EntityKeyValueWrapper from '../service/entity/EntityKeyValueWrapper';
 
 export default class SheetUtil {
 
@@ -56,23 +58,17 @@ export default class SheetUtil {
 
     /**
      * getAllKeyValue
-     * @param {GoogleAppsScript.Spreadsheet.Sheet | [[EntityUnit]]} sheet - Spreadsheet or EntityUnit two-dimensional array
+     * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet - Spreadsheet or EntityUnit two-dimensional array
      * @param {?[GetAllKeyValueOption]} options
      * @param {number} offset Number of starting column (key)
      * @returns {Map<string, string>}
      */
     static getAllKeyValue(sheet, options, offset = 1) {
         /**@type {any[][]} */
-        let values;
-
-        if (sheet instanceof Array) {
-            values = sheet;
-        } else {
-            values = sheet.getRange(2, offset, sheet.getLastRow() - 1, 2).getValues();
-        }
+        let values = sheet.getRange(2, offset, sheet.getLastRow() - 1, 2).getValues();
 
         let map = new Map();
-        
+
         if (options instanceof Array) {
             values.forEach(element => {
                 if (element[0] == "") return;
@@ -88,6 +84,36 @@ export default class SheetUtil {
         } else {
             values.forEach(element => {
                 map.set(element[0], element[1]);
+            });
+        }
+        return map;
+    }
+
+    /**
+     * getEntityKeyValue
+     * @param {EntityUnit[][]} values - entities
+     * @param {?[GetEntityKeyValueOption]} options
+     * @returns {Map<string, EntityKeyValueWrapper>}
+     */
+    static getEntityKeyValue(values, options) {
+        /**@type {Map<string, EntityKeyValueWrapper>} */
+        let map = new Map();
+        
+        if (options instanceof Array) {
+            values.forEach(element => {
+                if (element[0].toString() == "") return;
+                options.forEach(option => {
+                    if (option.key === null || element[0].toString() == option.key) {
+                        let optionReturn = option.callback(element[1], element[0], map);
+                        if (optionReturn instanceof Map) {
+                            map = new Map([...map, ...optionReturn]);
+                        }
+                    } else map.set(element[0].toString(), new EntityKeyValueWrapper(element[0], element[1]));
+                })
+            });
+        } else {
+            values.forEach(element => {
+                map.set(element[0].toString(), new EntityKeyValueWrapper(element[0], element[1]));
             });
         }
         return map;

@@ -7,6 +7,7 @@ import SheetUtil from '../util/SheetUtil';
 import findKey from 'lodash/findKey'
 import EntityKeyValueWrapper from '../service/entity/EntityKeyValueWrapper';
 import EntitySource from '../service/entity/EntitySource';
+import KeyValueEntityBuilder from '../service/entity/KeyValueEntityBuilder';
 
 let logger = new FOSLogger("TestEndPoint");
 
@@ -97,4 +98,19 @@ global.testEntitySource = () => {
     })
 
     entitySource.refresh();
+}
+
+global.testGetEntityKeyValue = () => {
+    let spreadsheet = SpreadsheetApp.openById(FOSRequire("config").secret.config.sheet);
+    let range = spreadsheet.getSheetByName("global").getRange(2, 1, 6, 2);
+    let entities = new EntitySource(range).getEntities();
+
+    let keyValueMap = SheetUtil.getEntityKeyValue(entities);
+    console.log(keyValueMap.get("sys.env.name"));
+}
+
+global.testKeyValueEntityBuilder = () => {
+    let spreadsheet = SpreadsheetApp.openById(FOSRequire("config").secret.config.sheet);
+    let keyValueEntitySource = new KeyValueEntityBuilder(spreadsheet, "global").build();
+    console.log(keyValueEntitySource.get("sys.env.name"));
 }

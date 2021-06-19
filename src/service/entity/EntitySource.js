@@ -17,8 +17,11 @@ export default class {
         this.entities = this.packageEntities();
     }
 
+    /**
+     * 
+     */
     packageEntities() {
-        /** @type {[EntityUnit[]]} */
+        /** @type {EntityUnit[][]} */
         // @ts-ignore
         let entities = [];
 
