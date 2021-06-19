@@ -62,12 +62,12 @@ export default class SheetUtil {
      * @returns {Map<string, string>}
      */
     static getAllKeyValue(sheet, options, offset = 1) {
+        /**@type {any[][]} */
         let values;
 
         if (sheet instanceof Array) {
             values = sheet;
         } else {
-            // @ts-ignore
             values = sheet.getRange(2, offset, sheet.getLastRow() - 1, 2).getValues();
         }
 

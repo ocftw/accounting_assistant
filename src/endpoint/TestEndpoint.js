@@ -6,6 +6,7 @@ import SheetUtil from '../util/SheetUtil';
 
 import findKey from 'lodash/findKey'
 import EntityKeyValueWrapper from '../service/entity/EntityKeyValueWrapper';
+import EntitySource from '../service/entity/EntitySource';
 
 let logger = new FOSLogger("TestEndPoint");
 
@@ -82,4 +83,18 @@ global.testEntityUtilToString = () => {
     console.log(entity + "12345");
     console.log(entity == "test");
     console.log(entity === "test");
+}
+
+global.testEntitySource = () => {
+    let sheet = SpreadsheetApp.openById(FOSRequire("config").secret.config.sheet);
+    let range = sheet.getSheetByName("global").getRange(2, 1, 6, 2);
+    let entitySource = new EntitySource(range);
+    entitySource.getEntities().forEach((values) => {
+        values.forEach((value) => {
+            console.log(value.value);
+            if(value.value == "TestService")value.value = "TestService2333"
+        })
+    })
+
+    entitySource.refresh();
 }
