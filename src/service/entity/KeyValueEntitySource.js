@@ -6,7 +6,7 @@ import EntitySource from "./EntitySource";
 export default class {
 
     /**
-     * 
+     * constructor
      * @param {Map<string, EntityKeyValueWrapper>} entityKeyValueMap 
      * @param {EntitySource[]} entitySourceList
      */

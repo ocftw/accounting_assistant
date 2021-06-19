@@ -1,5 +1,6 @@
 //@ts-check
 
+import SheetUtil from "../../util/SheetUtil";
 import CellPath from "./CellPath";
 import EntityUnit from "./EntityUnit";
 
@@ -18,7 +19,8 @@ export default class {
     }
 
     /**
-     * 
+     * packageEntities
+     * @returns {EntityUnit[][]}
      */
     packageEntities() {
         /** @type {EntityUnit[][]} */
@@ -48,11 +50,15 @@ export default class {
         return this.entities;
     }
 
+    removeEmptyRow() {
+        SheetUtil.removeEmptyLines(this.range.getSheet());
+    }
+
     refresh() {
         this.editCells.forEach((entityUnit) => {
             let cellPath = entityUnit.cellPath;
-            this.values[cellPath.row][cellPath.column] = entityUnit.value;
-        })
+            this.values[cellPath.row][cellPath.column] = entityUnit.isRemove ? "" : entityUnit.value;
+        });
 
         this.range.setValues(this.values);
         this.editCells = [];

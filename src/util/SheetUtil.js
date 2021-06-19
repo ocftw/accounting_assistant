@@ -8,18 +8,17 @@ import GetEntityKeyValueOption from './GetEntityKeyValueOption';
 import EntityKeyValueWrapper from '../service/entity/EntityKeyValueWrapper';
 
 export default class SheetUtil {
-
     /**
      * sheetIsEmpty
-     * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet 
+     * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet
      */
-    static sheetIsEmpty(sheet){
+    static sheetIsEmpty(sheet) {
         return sheet.getDataRange().isBlank();
     }
 
     /**
      * getAllKeyValueVersion
-     * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet 
+     * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet
      * @returns {?[KeyValueVersion]}
      */
     static getAllKeyValueVersion(sheet) {
@@ -28,17 +27,22 @@ export default class SheetUtil {
         /** @type {[KeyValueVersion]} */
         let keyValueVersionList = null;
 
-        for (let i = 0; i < versionList.length; i++){
+        for (let i = 0; i < versionList.length; i++) {
             let version = versionList[i];
 
             if (version[0] !== "version") {
-                throw new Error("The key-value version control is not used, or has a wrong data format. " +
-                    "First key should be a string \"version\" but is " + version[0]);
+                throw new Error(
+                    "The key-value version control is not used, or has a wrong data format. " +
+                    'First key should be a string "version" but is ' +
+                    version[0]
+                );
             }
 
             if (version[1] === "") {
-                throw new Error("The key-value version control is not used, or has a wrong data format. " +
-                    "The version name cannot be empty");
+                throw new Error(
+                    "The key-value version control is not used, or has a wrong data format. " +
+                    "The version name cannot be empty"
+                );
             }
 
             let keyValueVersion = new KeyValueVersion(version[1], i * 2 + 1);
@@ -70,7 +74,7 @@ export default class SheetUtil {
         let map = new Map();
 
         if (options instanceof Array) {
-            values.forEach(element => {
+            values.forEach((element) => {
                 if (element[0] == "") return;
                 options.forEach(option => {
                     if (option.key === null || element[0] == option.key) {
@@ -79,7 +83,7 @@ export default class SheetUtil {
                             map = new Map([...map, ...optionReturn]);
                         }
                     } else map.set(element[0], element[1]);
-                })
+                });
             });
         } else {
             values.forEach(element => {
@@ -98,7 +102,7 @@ export default class SheetUtil {
     static getEntityKeyValue(values, options) {
         /**@type {Map<string, EntityKeyValueWrapper>} */
         let map = new Map();
-        
+
         if (options instanceof Array) {
             values.forEach(element => {
                 if (element[0].toString() == "") return;
@@ -130,7 +134,7 @@ export default class SheetUtil {
     static safeInsertKeyValue(sheet, key, value, overwriteExistingValue = false, offset = 1) {
         let values = sheet.getRange(2, offset, sheet.getLastRow() - 1, 2).getValues();
         let flag = false;
-        
+
         values.some((array, index) => {
             if (array[0] === key && overwriteExistingValue) {
                 sheet.getRange(index + 1, 1).setValue(value);
@@ -140,7 +144,7 @@ export default class SheetUtil {
                 flag = true;
                 return true;
             }
-        })
+        });
 
         if (!flag) SheetUtil.insertKeyValue(sheet, key, value);
     }
@@ -158,7 +162,7 @@ export default class SheetUtil {
 
     /**
      * prefixAndImportOptions
-     * @param {GoogleAppsScript.Spreadsheet.Spreadsheet} spreadsheet 
+     * @param {GoogleAppsScript.Spreadsheet.Spreadsheet} spreadsheet
      * @returns {[GetAllKeyValueOption]}
      */
     static prefixAndImportOptions(spreadsheet) {
@@ -172,7 +176,7 @@ export default class SheetUtil {
                     let returnMap = new Map();
                     rawMap.forEach((value, key) => {
                         returnMap.set(prefix + key, value);
-                    })
+                    });
                     return returnMap;
                 } else return SheetUtil.getAllKeyValue(spreadsheet.getSheetByName(importValue), [
                     new GetAllKeyValueOption(null, (importValue, importKey, mapInNow) => {
@@ -193,5 +197,31 @@ export default class SheetUtil {
                 ]);
             })
         ]
+    }
+
+    static isEmptyRow(row) {
+        for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
+            if (row[columnIndex]) return false;
+        }
+        return true;
+    }
+
+    /**
+     * removeEmptyLines
+     * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet 
+     */
+    static removeEmptyLines(sheet) {
+        let lastRowIndex = sheet.getLastRow();
+        let lastColumnIndex = sheet.getLastColumn();
+        let range = sheet.getRange(1, 1, lastRowIndex, lastColumnIndex);
+        let data = range.getValues();
+
+        for (let rowIndex = data.length - 1; rowIndex >= 0; rowIndex--) {
+            let row = data[rowIndex];
+
+            if (SheetUtil.isEmptyRow(row)) {
+                sheet.deleteRow(rowIndex + 1);
+            }
+        }
     }
 }

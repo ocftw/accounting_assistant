@@ -15,6 +15,23 @@ export default class {
         this._value = value;
         this._cellPath = cellPath;
         this._isEdited = false;
+        this._isRemove = false;
+    }
+
+    setRemove() {
+        this._isRemove = true;
+        this.markEdited();
+    }
+
+    markEdited() {
+        if (!this._isEdited) {
+            this._isEdited = true;
+            this._entitySource.addEditCell(this);
+        }
+    }
+
+    get isRemove() {
+        return this._isRemove;
     }
 
     get value() {
@@ -23,11 +40,7 @@ export default class {
 
     set value(value) {
         this._value = value;
-
-        if (!this._isEdited) {
-            this._isEdited = true;
-            this._entitySource.addEditCell(this);
-        }
+        this.markEdited();
     }
 
     get cellPath() {

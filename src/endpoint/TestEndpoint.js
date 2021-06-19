@@ -93,7 +93,7 @@ global.testEntitySource = () => {
     entitySource.getEntities().forEach((values) => {
         values.forEach((value) => {
             console.log(value.value);
-            if(value.value == "TestService")value.value = "TestService2333"
+            if (value.value == "TestService") value.value = "TestService2333";
         })
     })
 
@@ -113,4 +113,20 @@ global.testKeyValueEntityBuilder = () => {
     let spreadsheet = SpreadsheetApp.openById(FOSRequire("config").secret.config.sheet);
     let keyValueEntitySource = new KeyValueEntityBuilder(spreadsheet, "global").build();
     console.log(keyValueEntitySource.get("sys.env.name"));
+}
+
+global.testEntitySourceRemove = () => {
+    let sheet = SpreadsheetApp.openById("1FvCK_6bXR1WivQ-cjPgTwKnIto4MdIFSV1uxxNb0f70");
+    let range = sheet.getSheetByName("TestKeyValue").getRange(2, 1, 6, 2);
+    let entitySource = new EntitySource(range);
+    entitySource.getEntities().forEach((values) => {
+        values.forEach((value) => {
+            console.log(value.value);
+            if (value.value == "sys.log.type") value.setRemove();
+            if (value.value == "G_CONSOLE") value.setRemove();
+        })
+    })
+
+    entitySource.refresh();
+    entitySource.removeEmptyRow();
 }
