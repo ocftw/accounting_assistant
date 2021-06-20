@@ -128,5 +128,5 @@ global.testEntitySourceRemove = () => {
     })
 
     entitySource.refresh();
-    entitySource.removeEmptyRow();
+    entitySource.sortEmptyRow();
 }

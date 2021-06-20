@@ -1,5 +1,6 @@
 //@ts-check
 
+import { remove } from "lodash";
 import SheetUtil from "../../util/SheetUtil";
 import CellPath from "./CellPath";
 import EntityUnit from "./EntityUnit";
@@ -50,8 +51,23 @@ export default class {
         return this.entities;
     }
 
-    removeEmptyRow() {
-        SheetUtil.removeEmptyLines(this.range.getSheet());
+    sortEmptyRow() {
+        let removeRowNum = 0;
+
+        remove(this.values, (value) => {
+            if (SheetUtil.isEmptyRow(value)) {
+                removeRowNum++;
+                return true;
+            } else return false;
+        })
+
+        for (let i = 0; i < removeRowNum; i++){
+            let rowNum = this.values.length;
+            this.values[rowNum] = [];
+            for (let columnNum = 0; columnNum < this.values[0].length; columnNum++) this.values[rowNum][columnNum] = "";
+        }
+
+        this.range.setValues(this.values);
     }
 
     refresh() {

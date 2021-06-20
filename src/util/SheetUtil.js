@@ -199,9 +199,13 @@ export default class SheetUtil {
         ]
     }
 
+    /**
+     * isEmptyRow
+     * @param {string[]} row 
+     */
     static isEmptyRow(row) {
         for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
-            if (row[columnIndex]) return false;
+            if (row[columnIndex] !== "") return false;
         }
         return true;
     }
