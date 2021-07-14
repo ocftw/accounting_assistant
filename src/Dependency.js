@@ -1,10 +1,11 @@
-import LoggerService from './service/LoggerService';
+// import LoggerService from './service/LoggerService';
 import DriveService from './service/DriveService';
 import SpreadsheetService from './service/SpreadsheetService';
 import ScriptService from './service/ScriptService';
 import EndpointService from './service/EndpointService';
 
-let FOSLogger = new LoggerService("System");
+let loggerService = FOSRequire("LoggerService");
+let FOSLogger = loggerService.buildLogger("system");
 FOSLogger.info("Initializing dependencies");
 
 let requireService = FOSRequire("RequireService");

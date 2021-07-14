@@ -15,7 +15,7 @@ class TestScript extends AbstractScript {
     }
 
     run() {
-        let logger = new FOSLogger("TestScript");
+        let logger = FOSRequire("LoggerService").buildLogger("TestScript");
         logger.info("Test Script Run");
         logger.info("The para is " + this.parameterDefineMap.get("paraKey").object);
         

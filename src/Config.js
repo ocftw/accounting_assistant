@@ -1,7 +1,6 @@
 //@ts-check
 import { customAlphabet } from 'nanoid/non-secure'
-import SheetUtil from './util/SheetUtil';
-import sheetUtil from './util/SheetUtil'
+import sheetUtil from './util/SheetUtil';
 
 const secret = {
     admin: {
@@ -53,7 +52,7 @@ const hasLocalConfig = (name) => {
 const createConfig = () => {
     return (key, value) => {
         let sheet = configSpreadsheet.getSheetByName("global");
-        if (!config.has(key)) SheetUtil.insertKeyValue(sheet, key, value);
+        if (!config.has(key)) sheetUtil.insertKeyValue(sheet, key, value);
     }
 }
 
@@ -66,10 +65,10 @@ const createLocalConfig = (name) => {
     return (key, value) => {
         if (configSpreadsheet.getSheetByName(name) != null) {
             let sheet = configSpreadsheet.getSheetByName(name);
-            if (!config.has(key)) SheetUtil.insertKeyValue(sheet, key, value);
+            if (!config.has(key)) sheetUtil.insertKeyValue(sheet, key, value);
         } else {
             let sheet = configSpreadsheet.getSheetByName("global");
-            if (!config.has(key)) SheetUtil.insertKeyValue(sheet, name + "." + key, value);
+            if (!config.has(key)) sheetUtil.insertKeyValue(sheet, name + "." + key, value);
         }
     }
 }
@@ -80,7 +79,7 @@ const createLocalConfig = (name) => {
 const updateConfig = () => {
     return (key, value) => {
         let sheet = configSpreadsheet.getSheetByName("global");
-        SheetUtil.safeInsertKeyValue(sheet, key, value, true);
+        sheetUtil.safeInsertKeyValue(sheet, key, value, true);
     }
 }
 
@@ -93,10 +92,10 @@ const updateLocalConfig = (name) => {
     return (key, value) => {
         if (configSpreadsheet.getSheetByName(name) != null) {
             let sheet = configSpreadsheet.getSheetByName(name);
-            SheetUtil.safeInsertKeyValue(sheet, key, value, true);
+            sheetUtil.safeInsertKeyValue(sheet, key, value, true);
         } else {
             let sheet = configSpreadsheet.getSheetByName("global");
-            SheetUtil.safeInsertKeyValue(sheet, name + "." + key, value, true);
+            sheetUtil.safeInsertKeyValue(sheet, name + "." + key, value, true);
         }
     }
 }

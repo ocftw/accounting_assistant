@@ -9,7 +9,6 @@ export default class extends AbstractService{
 
     constructor() {
         super();
-        // this.logger = new FOSLogger("TestService");
         this.check = "TestService's this";
 
         let dependencytest3 = this.dependencyService.registeDependency("TestService:dependency3", this.testMethod3, this);

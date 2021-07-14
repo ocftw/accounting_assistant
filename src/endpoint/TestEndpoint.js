@@ -1,15 +1,13 @@
 import v8n from 'v8n';
 import EntityUnit from '../service/entity/EntityUnit';
-import FOSLogger from '../service/LoggerService';
 import ConfigUtil from '../util/ConfigUtil';
 import SheetUtil from '../util/SheetUtil';
 
-import findKey from 'lodash/findKey'
 import EntityKeyValueWrapper from '../service/entity/EntityKeyValueWrapper';
 import EntitySource from '../service/entity/EntitySource';
 import KeyValueEntityBuilder from '../service/entity/KeyValueEntityBuilder';
 
-let logger = new FOSLogger("TestEndPoint");
+let logger = FOSRequire("LoggerService").buildLogger("TestEndPoint");
 
 global.testV8n = () => Logger.log(v8n().number().test("teasd"));
 
@@ -101,12 +99,14 @@ global.testEntitySource = () => {
 }
 
 global.testGetEntityKeyValue = () => {
+    console.time("testGetEntityKeyValue");
     let spreadsheet = SpreadsheetApp.openById(FOSRequire("config").secret.config.sheet);
     let range = spreadsheet.getSheetByName("global").getRange(2, 1, 6, 2);
     let entities = new EntitySource(range).getEntities();
 
     let keyValueMap = SheetUtil.getEntityKeyValue(entities);
     console.log(keyValueMap.get("sys.env.name"));
+    console.timeEnd("testGetEntityKeyValue");
 }
 
 global.testKeyValueEntityBuilder = () => {
@@ -122,8 +122,8 @@ global.testEntitySourceRemove = () => {
     entitySource.getEntities().forEach((values) => {
         values.forEach((value) => {
             console.log(value.value);
-            if (value.value == "sys.log.type") value.setRemove();
-            if (value.value == "G_CONSOLE") value.setRemove();
+            if (value.value == "sys.log.type") value.remove();
+            if (value.value == "G_CONSOLE") value.remove();
         })
     })
 

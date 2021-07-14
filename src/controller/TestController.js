@@ -16,7 +16,7 @@ class TestController extends AbstractController {
     }
 
     run() {
-        let logger = new FOSLogger("TestController");
+        let logger = FOSRequire("LoggerService").buildLogger("TestController");
         logger.info("Test Controller Run");
         logger.info("The para is " + this.parameterDefineMap.get("paraKey").object);
         return this.parameterDefineMap.get("paraKey").object + " controller return";

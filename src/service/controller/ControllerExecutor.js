@@ -1,12 +1,10 @@
-import FOSLogger from '../LoggerService'
-
 export default class {
     constructor(controllerClass, parameterMap) {
         let controller = new controllerClass();
         this.controllerClass = controllerClass;
         this.controller = controller;
         this.parameterMap = parameterMap;
-        this.logger = new FOSLogger("ControllerExecutor");
+        this.logger = FOSRequire("LoggerService").buildLogger("ControllerExecutor");
     }
 
     execute() {

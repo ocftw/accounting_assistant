@@ -18,7 +18,7 @@ export default class {
         this._isRemove = false;
     }
 
-    setRemove() {
+    remove() {
         this._isRemove = true;
         this.markEdited();
     }

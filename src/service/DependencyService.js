@@ -1,10 +1,9 @@
 import DependencyUnit from './dependency/DependencyUnit'
-import FOSLogger from './LoggerService';
 
 export default class {
     constructor() {
         global.FOSSelfs.dependencyService = this;
-        this.logger = new FOSLogger("DependencyService");
+        this.logger = FOSRequire("LoggerService").buildLogger("DependencyService");
 
         this.dependencys = new Set();
     }

@@ -1,19 +1,26 @@
 //@ts-check
-import FOSLogger from './LoggerService';
+import LoggerService from './LoggerService';
 import Config from '../Config';
 import DependencyService from './DependencyService';
+import Logger from './logger/Logger';
 
 export default class AbstractService {
     constructor() {
-        // @ts-ignore
-        this.logger = new FOSLogger(this.constructor.getName());
 
+        //@ts-ignore
+        let serviceName = this.constructor.getName();
+
+        /**@type {LoggerService} logger */
+        let loggerService = (FOSRequire("LoggerService"));
+
+        /**@type {Logger} logger */
+        this.logger = (loggerService.buildLogger(serviceName));
+        
         /**@type {Config} config */
         this.config = (FOSRequire("config"));
-        // @ts-ignore
-        this.getServiceConfig = this.config.getLocalConfig(this.constructor.getName());
-        // @ts-ignore
-        this.hasServiceConfig = this.config.hasLocalConfig(this.constructor.getName());
+        
+        this.getServiceConfig = this.config.getLocalConfig(serviceName);
+        this.hasServiceConfig = this.config.hasLocalConfig(serviceName);
 
         /**@type {DependencyService}} dependencyService */
         this.dependencyService = (FOSRequire("DependencyService"));

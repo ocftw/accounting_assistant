@@ -1,9 +1,9 @@
 import FOSLogger from '../service/LoggerService';
 
 export default class {
-    constructor() {
+    constructor(loggerService) {
         global.FOSSelfs.requireService = this;
-        this.logger = new FOSLogger("RequireService");
+        this.logger = loggerService.buildLogger("RequireService");
 
         this.component = new Map();
         this.addComponent("config", global.FOSValues.FOSConfig);

@@ -12,7 +12,7 @@ export default class extends AbstractService{
 
         this.createLocalConfig = this.config.createLocalConfig("SpreadsheetService");
 
-        /** @type {DriveService} driveService */
+        /** @type {DriveService} */
         this.driveService = (FOSRequire("DriveService"));
 
         this.check();
