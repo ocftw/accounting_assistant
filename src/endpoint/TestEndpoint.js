@@ -6,6 +6,10 @@ import SheetUtil from '../util/SheetUtil';
 import EntityKeyValueWrapper from '../service/entity/EntityKeyValueWrapper';
 import EntitySource from '../service/entity/EntitySource';
 import KeyValueEntityBuilder from '../service/entity/KeyValueEntityBuilder';
+import ColumnDefine from '../service/spreadsheet/ColumnDefine';
+import SheetDefine from '../service/spreadsheet/SheetDefine';
+import ModelEntitySource from '../service/entity/ModelEntitySource';
+import { TestModel } from '../model/TestModel';
 
 let logger = FOSRequire("LoggerService").buildLogger("TestEndPoint");
 
@@ -129,4 +133,22 @@ global.testEntitySourceRemove = () => {
 
     entitySource.refresh();
     entitySource.sortEmptyRow();
+}
+
+global.testModel = () => {
+    let columnDefines = [];
+    columnDefines.push(new ColumnDefine("名稱", "name"));
+    columnDefines.push(new ColumnDefine("數字", "num"));
+    columnDefines.push(new ColumnDefine("日期", "date"));
+    
+    let sheetDefine = new SheetDefine("TestModel", 0, 0, 1, columnDefines);
+    let sheet = SpreadsheetApp.openById("18olFYeiM-W-MpP8E_oHixS5R8IEsdgf1EroQPnWphag").getSheetByName("Sheet1");
+    let range = sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn());
+    let modelEntitySource = new ModelEntitySource(TestModel, range, sheetDefine);
+    /** @type {TestModel} */
+    let testModel = modelEntitySource.getModels()[0];
+    console.log(testModel.name);
+    testModel.name = "（已修改）";
+    testModel.num = testModel.num * 2;
+    modelEntitySource.refresh();
 }
