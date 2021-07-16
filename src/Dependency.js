@@ -5,7 +5,7 @@ import ScriptService from './service/ScriptService';
 import EndpointService from './service/EndpointService';
 
 let loggerService = FOSRequire("LoggerService");
-let FOSLogger = loggerService.buildLogger("system");
+let FOSLogger = loggerService.buildLogger("Dependency");
 FOSLogger.info("Initializing dependencies");
 
 let requireService = FOSRequire("RequireService");
@@ -15,6 +15,9 @@ requireService.addComponent("DriveService", driveService);
 
 let spreadsheetService = new SpreadsheetService();
 requireService.addComponent("SpreadsheetService", spreadsheetService);
+
+let modelService = new ModelService();
+requireService.addComponent("ModelService", modelService);
 
 let scriptService = new ScriptService();
 requireService.addComponent("ScriptService", scriptService);
@@ -27,4 +30,5 @@ FOSLogger.info("Initializing other dependencies");
 
 //Import Dependency Test
 import TestService from './service/TestService';
+import ModelService from './service/ModelService';
 let testService = new TestService();

@@ -6,7 +6,7 @@ import LoggerService from './service/LoggerService';
 FOSValues.FOSConfig.session.source = "system";
 
 let loggerService = new LoggerService();
-let FOSLogger = loggerService.buildLogger("System");
+let FOSLogger = loggerService.buildLogger("BasicDependency");
 
 FOSLogger.info("Starting Financial Operating System Version " + FOSValues.FOSConfig.config.get("sys.version"));
 FOSLogger.info("Environment " + FOSValues.FOSConfig.config.get("sys.env.name") + " loaded");
