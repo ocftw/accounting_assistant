@@ -7,8 +7,6 @@ import EntitySource from "./EntitySource";
 import EntityUnit from "./EntityUnit";
 
 export default class extends EntitySource{
-    //  * @param {string} type object type
-    //  * @param {?number} version object version
     
     /**
      * @param {typeof AbstractModel} modelClass
@@ -18,8 +16,6 @@ export default class extends EntitySource{
     constructor(modelClass, range, sheetDefine) {
         super(range);
         
-        // this.type = type;
-        // this.version = version;
         this.modelClass = modelClass;
 
         /** @type {SheetDefine} */

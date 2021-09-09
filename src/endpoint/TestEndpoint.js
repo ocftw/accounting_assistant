@@ -5,7 +5,7 @@ import SheetUtil from '../util/SheetUtil';
 
 import EntityKeyValueWrapper from '../service/entity/EntityKeyValueWrapper';
 import EntitySource from '../service/entity/EntitySource';
-import KeyValueEntityBuilder from '../service/entity/KeyValueEntityBuilder';
+import KeyValueEntitySource from '../service/entity/KeyValueEntitySource';
 import ColumnDefine from '../service/spreadsheet/ColumnDefine';
 import SheetDefine from '../service/spreadsheet/SheetDefine';
 import ModelEntitySource from '../service/entity/ModelEntitySource';
@@ -113,9 +113,9 @@ global.testGetEntityKeyValue = () => {
     console.timeEnd("testGetEntityKeyValue");
 }
 
-global.testKeyValueEntityBuilder = () => {
+global.testKeyValueEntitySource = () => {
     let spreadsheet = SpreadsheetApp.openById(FOSRequire("config").secret.config.sheet);
-    let keyValueEntitySource = new KeyValueEntityBuilder(spreadsheet, "global").build();
+    let keyValueEntitySource = new KeyValueEntitySource(spreadsheet, "global");
     console.log(keyValueEntitySource.get("sys.env.name"));
 }
 
@@ -151,4 +151,12 @@ global.testModel = () => {
     testModel.name = "（已修改）";
     testModel.num = testModel.num * 2;
     modelEntitySource.refresh();
+}
+
+global.testModel2 = () => {    
+    let sheet = SpreadsheetApp.openById("18olFYeiM-W-MpP8E_oHixS5R8IEsdgf1EroQPnWphag").getSheetByName("Sheet1");
+
+    sheet.getRange(2, 2).setValue("（已修改）");    
+    let num = sheet.getRange(2, 3).getValue();
+    sheet.getRange(2, 3).setValue(num * 2);
 }
