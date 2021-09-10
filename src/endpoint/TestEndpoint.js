@@ -153,10 +153,11 @@ global.testModel = () => {
     modelEntitySource.refresh();
 }
 
-global.testModel2 = () => {    
+global.testEditEntitySource = () => {
     let sheet = SpreadsheetApp.openById("18olFYeiM-W-MpP8E_oHixS5R8IEsdgf1EroQPnWphag").getSheetByName("Sheet1");
+    let range = sheet.getRange(1, 1, sheet.getLastRow() + 2, sheet.getLastColumn());
+    let entitySource = new EntitySource(range);
 
-    sheet.getRange(2, 2).setValue("（已修改）");    
-    let num = sheet.getRange(2, 3).getValue();
-    sheet.getRange(2, 3).setValue(num * 2);
+    entitySource.addNewRow("newName", "12345", "date");
+    entitySource.refresh();
 }
