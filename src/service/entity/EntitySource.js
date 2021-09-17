@@ -20,9 +20,6 @@ export default class {
         this.values = range.getValues();
         this.rowList = this.packageEntities();
 
-        /**@type {EntityUnit[][]} */
-        this.entities = this.rowList.getTwoDimensionalArray();
-
         this.version = 0;
     }
 
@@ -53,23 +50,15 @@ export default class {
      * @param  {...string} values 
      */
     addNewRow(...values) {
-        if (values.length != this.entities[0].length)
-            throw new Error(`The number of new row's columns is inconsistent with the actual (Need ${this.entities.length} but it is ${values.length})`);
+
+        //@ts-ignore
+        if (values.length != this.rowList.get(0).entities.length)
+            throw new Error(`The number of new row's columns is inconsistent with the actual (Need ${this.rowList.size} but it is ${values.length})`);
         
-        let lastEmptyNum = 0;
-        for (let i = this.entities.length - 1; i >= 0; i--){
-            
-            let isNotEmpty = this.entities[i].some((value) => {
-                if (value.toString() !== "") return true;
-            })
-
-            if (!isNotEmpty) lastEmptyNum = i;
-            else break;
-        }
-
-        if (lastEmptyNum !== this.entities.length) {
+        let emptyRow = this.rowList.getLastEmptyRow();
+        if (emptyRow) {
             let num = 0;
-            this.entities[lastEmptyNum].forEach((entity) => {
+            emptyRow.entities.forEach((entity) => {
                 entity.value = values[num];
                 num++;
             })
@@ -84,17 +73,17 @@ export default class {
         this.editCells.push(entityUnit);
     }
 
-    /**
-     * @deprecated
-     */
+    /**@deprecated */
     getEntities() {
-        return this.entities;
+        return this.rowList.getTwoDimensionalArray();
     }
 
     sortEmptyRowEntity() {
-
+        this.rowList.sortEmpty();
+        this.refresh();
     }
 
+    /**@deprecated */
     sortEmptyRow() {
         let removeRowNum = 0;
 
@@ -115,7 +104,6 @@ export default class {
     }
 
     refresh() {
-
         this.editCells.forEach((entityUnit) => {
             let cellPath = entityUnit.cellPath;
             this.values[cellPath.row][cellPath.column] = entityUnit.value;

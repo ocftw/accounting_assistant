@@ -167,8 +167,9 @@ global.testSortEmptyRowEntity = () => {
     let range = sheet.getRange(1, 1, sheet.getLastRow() + 2, sheet.getLastColumn());
     let entitySource = new EntitySource(range);
 
-    entitySource.addNewRow("newName", "12345", "date");
+    // entitySource.addNewRow("newName", "12345", "date");
+    // entitySource.sortEmptyRowEntity();
     entitySource.sortEmptyRowEntity();
-    
+   
     entitySource.refresh();
 }
