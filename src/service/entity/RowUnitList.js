@@ -87,6 +87,7 @@ export default class {
 
             return current;
         }
+        return false;
     }
 
     /**
@@ -105,13 +106,14 @@ export default class {
                 } else {
                     previous.next = current.next;
                 }
+                current.next = null;
                 this.size--;
                 return current;
             }
             previous = current;
             current = current.next;
         }
-        return -1;
+        return false;
     }
 
     /**
@@ -133,7 +135,8 @@ export default class {
 
     /**
      * get
-     * @param {number} index 
+     * @param {number} index
+     * @returns {RowUnit}
      */
     get(index) {
         let count = 0;
@@ -144,8 +147,6 @@ export default class {
             count++;
             current = current.next;
         }
-
-        return -1;
     }
 
     listSize() {
@@ -154,29 +155,38 @@ export default class {
 
     sortEmpty() {
         let current = this.head;
+        let count = 0;
 
-        do {
+        while (true) {
+            let currentNext = null;
+            if (current.next) currentNext = current.next;
+
             //@ts-ignore
             if (SheetUtil.isEmptyRow(current.entities)) {
                 this.removeElement(current);
                 this.add(current);
             }
 
-            current = current.next;
+            if (currentNext && count < this.size) {
+                current = currentNext;
+                count++;
+            } else break;
         }
-        while (current.next);
-        
+        this.syncRowUnit();
     }
 
     syncRowUnit() {
         let count = 0;
         let current = this.head;
-        do {
+
+        while (true) {
             current.sync(count);
-            current = current.next;
-            count++;
+
+            if (current.next) {
+                current = current.next;
+                count++;
+            } else break;
         }
-        while (current.next);
     }
 
     /**
@@ -202,5 +212,36 @@ export default class {
         while (current.next);
 
         return array;
+    }
+
+    getEmptyRow() {
+        let current = this.head;
+
+        do {
+            //@ts-ignore
+            if (SheetUtil.isEmptyRow(current.entities)) return current;
+            current = current.next;
+        }
+        while (current.next);
+
+        return false;
+    }
+
+    getLastEmptyRow() {
+        let current = this.head;
+        let lastDataRow = this.head;
+
+        do {
+            //@ts-ignore
+            if (!SheetUtil.isEmptyRow(current.entities)) {
+                lastDataRow = current;
+            }
+
+            current = current.next;
+        }
+        while (current.next);
+
+        if (lastDataRow.next) return lastDataRow.next;
+        else return false;
     }
 }
