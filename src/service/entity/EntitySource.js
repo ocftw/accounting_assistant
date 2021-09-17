@@ -4,6 +4,8 @@ import { remove } from "lodash";
 import SheetUtil from "../../util/SheetUtil";
 import CellPath from "./CellPath";
 import EntityUnit from "./EntityUnit";
+import RowUnit from "./RowUnit";
+import RowUnitList from "./RowUnitList";
 
 export default class {
     
@@ -16,8 +18,10 @@ export default class {
 
         this.range = range;
         this.values = range.getValues();
+        this.rowList = this.packageEntities();
+
         /**@type {EntityUnit[][]} */
-        this.entities = this.packageEntities();
+        this.entities = this.rowList.getTwoDimensionalArray();
 
         this.version = 0;
     }
@@ -25,22 +29,23 @@ export default class {
     /**
      * packageEntities
      * @access private
-     * @returns {EntityUnit[][]}
+     * @returns {RowUnitList}
      */
     packageEntities() {
-        /** @type {EntityUnit[][]} */
-        // @ts-ignore
-        let entities = [];
+        let rowList = new RowUnitList();
 
         for (let row = 0; row < this.values.length; row++){
-            //@ts-ignore
-            entities[row] = [];
+            
+            /**@type {EntityUnit[]} */
+            let entities = [];
             for (let column = 0; column < this.values[row].length; column++){
-                entities[row][column] = new EntityUnit(this, this.values[row][column], new CellPath(row, column));
+                entities[column] = new EntityUnit(this, this.values[row][column],
+                    new CellPath(row, column));
             }
+            rowList.add(new RowUnit(entities, row));
         }
 
-        return entities;
+        return rowList;
     }
 
     /**
@@ -79,8 +84,15 @@ export default class {
         this.editCells.push(entityUnit);
     }
 
+    /**
+     * @deprecated
+     */
     getEntities() {
         return this.entities;
+    }
+
+    sortEmptyRowEntity() {
+
     }
 
     sortEmptyRow() {
@@ -100,36 +112,10 @@ export default class {
         }
 
         this.range.setValues(this.values);
-        this.repackAll();
-    }
-
-    repackAll() {
-        this.closeAll();
-
-        /**@type {EntityUnit[][]} */
-        this.entities = this.packageEntities();
-        this.version += 1;
-    }
-
-    closeAll() {
-        this.entities.forEach((values) => {
-            values.forEach((value) => {
-                value.markClosed();
-            })
-        })
-    }
-
-    /**
-     * close
-     * @param {number} row 
-     */
-    close(row) {
-        this.entities[row].forEach((value) => {
-                value.markClosed();
-        })
     }
 
     refresh() {
+
         this.editCells.forEach((entityUnit) => {
             let cellPath = entityUnit.cellPath;
             this.values[cellPath.row][cellPath.column] = entityUnit.value;

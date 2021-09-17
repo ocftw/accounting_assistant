@@ -205,7 +205,7 @@ export default class SheetUtil {
      */
     static isEmptyRow(row) {
         for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
-            if (row[columnIndex] !== "") return false;
+            if (row[columnIndex].toString() !== "") return false;
         }
         return true;
     }

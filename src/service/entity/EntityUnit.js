@@ -15,7 +15,6 @@ export default class {
         this._value = value;
         this._cellPath = cellPath;
         this._isEdited = false;
-        this._isClose = false;
     }
 
     remove() {
@@ -32,23 +31,16 @@ export default class {
         }
     }
 
-    markClosed() {
-        this._isClose = true;
-    }
-
     get value() {
-        this.checkIsClose();
         return this._value;
     }
 
     set value(value) {
-        this.checkIsClose();
         this._value = value;
         this.markEdited();
     }
 
     get cellPath() {
-        this.checkIsClose();
         return this._cellPath;
     }
 
@@ -56,12 +48,7 @@ export default class {
         throw new Error('cellPath is immutable.');
     }
 
-    checkIsClose() {
-        if (this._isClose) throw new Error("Entity is closed");
-    }
-
     toString() {
-        this.checkIsClose();
         return this._value;
     }
 }

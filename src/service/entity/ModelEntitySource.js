@@ -21,6 +21,10 @@ export default class extends EntitySource{
         /** @type {SheetDefine} */
         this.sheetDefine = sheetDefine;
 
+        this.package();
+    }
+
+    package() {
         this.columns = this.translateColumn(this.sheetDefine.columnRow, this.sheetDefine.columnDefines);
         this.models = this.packageModel(this.modelClass, this.sheetDefine.dataStartRow, this.columns);
         this.proxiedModels = this.packageProxies(this.models);

@@ -1,6 +1,6 @@
 //@ts-check
 
-export default class {
+export default class CallPath {
 
     /**
      * @param {number} row 
