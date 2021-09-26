@@ -193,3 +193,10 @@ global.testPutKeyValueSource = () => {
 
     keyValueEntitySource.refresh();
 }
+
+global.testRemoveKeyValueSource = () => {
+    let spreadsheet = SpreadsheetApp.openById("18olFYeiM-W-MpP8E_oHixS5R8IEsdgf1EroQPnWphag");
+    let keyValueEntitySource = new KeyValueEntitySource(spreadsheet, "TestKeyValue", true);
+    keyValueEntitySource.delete("logzio.token");
+    keyValueEntitySource.refresh();
+}

@@ -95,9 +95,17 @@ export default class {
      * @param {string} key 
      */
     delete(key) {
-        //TODO
+        let entityKeyValueWrapper = this.entityKeyValueMap.get(key);
+        if (entityKeyValueWrapper === undefined) return;
+        entityKeyValueWrapper.keyEntity.remove();
+        entityKeyValueWrapper.valueEntity.remove();
+        entityKeyValueWrapper.valueEntity._entitySource.sortEmptyRowEntity();
     }
 
+    /**
+     * has
+     * @param {string} key 
+     */
     has(key) {
         return this.entityKeyValueMap.has(key);
     }
