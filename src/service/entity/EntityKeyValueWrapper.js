@@ -5,7 +5,7 @@ import EntityUnit from "./EntityUnit";
 export default class {
 
     /**
-     * 
+     * constructor
      * @param {EntityUnit} key 
      * @param {EntityUnit} value 
      */

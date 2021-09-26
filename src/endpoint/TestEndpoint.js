@@ -115,8 +115,10 @@ global.testGetEntityKeyValue = () => {
 
 global.testKeyValueEntitySource = () => {
     let spreadsheet = SpreadsheetApp.openById(FOSRequire("config").secret.config.sheet);
-    let keyValueEntitySource = new KeyValueEntitySource(spreadsheet, "global");
-    console.log(keyValueEntitySource.get("sys.env.name"));
+    let keyValueEntitySource = new KeyValueEntitySource(spreadsheet, "global", true);
+    console.log(keyValueEntitySource.get("TestService.testKey").toString());
+    console.log(keyValueEntitySource.get("endpoint.test").toString());
+    keyValueEntitySource.refresh();
 }
 
 global.testEntitySourceRemove = () => {
