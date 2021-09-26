@@ -231,7 +231,7 @@ export default class {
         let current = this.head;
         let lastDataRow = this.head;
 
-        do {
+        while (current !== null) {
             //@ts-ignore
             if (!SheetUtil.isEmptyRow(current.entities)) {
                 lastDataRow = current;
@@ -239,9 +239,9 @@ export default class {
 
             current = current.next;
         }
-        while (current.next);
+        
 
-        if (lastDataRow.next) return lastDataRow.next;
+        if (lastDataRow.next !== null) return lastDataRow.next;
         else return false;
     }
 }

@@ -19,8 +19,6 @@ export default class {
         this.range = range;
         this.values = range.getValues();
         this.rowList = this.packageEntities();
-
-        this.version = 0;
     }
 
     /**
@@ -47,14 +45,15 @@ export default class {
 
     /**
      * addNewRow
-     * @param  {...string} values 
+     * @param  {string[]} values 
      */
-    addNewRow(...values) {
+    addNewRow(values) {
 
         //@ts-ignore
         if (values.length != this.rowList.get(0).entities.length)
-            throw new Error(`The number of new row's columns is inconsistent with the actual (Need ${this.rowList.size} but it is ${values.length})`);
+            throw new Error(`The number of new row's columns is inconsistent with the actual (Need ${this.rowList.get(0).entities.length} but it is ${values.length})`);
         
+        console.log(this.values);
         let emptyRow = this.rowList.getLastEmptyRow();
         if (emptyRow) {
             let num = 0;
@@ -62,6 +61,26 @@ export default class {
                 entity.value = values[num];
                 num++;
             })
+        } else {
+            let newRange = this.range.offset(0, 0, this.range.getHeight() + 10);
+            let newValues = newRange.getValues();
+            let rowList = this.rowList;
+
+            for (let row = this.range.getHeight(); row < newValues.length; row++){
+                
+                /**@type {EntityUnit[]} */
+                let entities = [];
+                for (let column = 0; column < newValues[row].length; column++){
+                    entities[column] = new EntityUnit(this, newValues[row][column],
+                        new CellPath(row, column));
+                }
+                rowList.add(new RowUnit(entities, row));
+            }
+
+            this.range = newRange;
+            this.values = newValues;
+
+            this.addNewRow(values);
         }
     }
 

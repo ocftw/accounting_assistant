@@ -164,10 +164,13 @@ global.testEditEntitySource = () => {
 
 global.testSortEmptyRowEntity = () => {
     let sheet = SpreadsheetApp.openById("18olFYeiM-W-MpP8E_oHixS5R8IEsdgf1EroQPnWphag").getSheetByName("Sheet1");
-    let range = sheet.getRange(1, 1, sheet.getLastRow() + 2, sheet.getLastColumn());
+    let range = sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn());
     let entitySource = new EntitySource(range);
 
-    // entitySource.addNewRow("newName", "12345", "date");
+    entitySource.addNewRow(["newName", "10001", "date"]);
+    entitySource.addNewRow(["newName", "10002", "date"]);
+    entitySource.addNewRow(["newName", "10003", "date"]);
+    entitySource.addNewRow(["newName", "10004", "date"]);
     // entitySource.sortEmptyRowEntity();
     entitySource.sortEmptyRowEntity();
    
