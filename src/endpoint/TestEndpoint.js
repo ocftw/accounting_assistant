@@ -178,3 +178,18 @@ global.testSortEmptyRowEntity = () => {
    
     entitySource.refresh();
 }
+
+global.testPutKeyValueSource = () => {
+    let spreadsheet = SpreadsheetApp.openById("18olFYeiM-W-MpP8E_oHixS5R8IEsdgf1EroQPnWphag");
+    let keyValueEntitySource = new KeyValueEntitySource(spreadsheet, "TestKeyValue", true);
+    console.log(keyValueEntitySource.get("sub1.test").toString());
+    console.log(keyValueEntitySource.get("sub2.test233").toString());
+    console.log(keyValueEntitySource.get("sys.env.name").toString());
+
+    keyValueEntitySource.put("PutKey", "PutValue");
+    keyValueEntitySource.put("sub1.1PutKey", "PutValue");
+    keyValueEntitySource.put("sub2.2PutKey", "PutValue");
+    keyValueEntitySource.put("sub25.2PutKey", "PutValue");
+
+    keyValueEntitySource.refresh();
+}

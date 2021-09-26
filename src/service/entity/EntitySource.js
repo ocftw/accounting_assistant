@@ -46,6 +46,7 @@ export default class {
     /**
      * addNewRow
      * @param  {string[]} values 
+     * @returns {EntityUnit[]}
      */
     addNewRow(values) {
 
@@ -53,7 +54,6 @@ export default class {
         if (values.length != this.rowList.get(0).entities.length)
             throw new Error(`The number of new row's columns is inconsistent with the actual (Need ${this.rowList.get(0).entities.length} but it is ${values.length})`);
         
-        console.log(this.values);
         let emptyRow = this.rowList.getLastEmptyRow();
         if (emptyRow) {
             let num = 0;
@@ -61,6 +61,7 @@ export default class {
                 entity.value = values[num];
                 num++;
             })
+            return emptyRow.entities;
         } else {
             let newRange = this.range.offset(0, 0, this.range.getHeight() + 10);
             let newValues = newRange.getValues();
@@ -80,7 +81,7 @@ export default class {
             this.range = newRange;
             this.values = newValues;
 
-            this.addNewRow(values);
+            return this.addNewRow(values);
         }
     }
 

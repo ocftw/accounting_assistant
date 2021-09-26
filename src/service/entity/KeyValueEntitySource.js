@@ -2,6 +2,7 @@
 
 import GetEntityKeyValueOption from "../../util/GetEntityKeyValueOption";
 import SheetUtil from "../../util/SheetUtil";
+import EntityKeyValueWrapper from "./EntityKeyValueWrapper";
 import EntitySource from "./EntitySource";
 
 export default class {
@@ -15,7 +16,7 @@ export default class {
     constructor(spreadsheet, defaultSheet, autoImport = false) {
         this.spreadsheet = spreadsheet;
         this.defaultSheet = spreadsheet.getSheetByName(defaultSheet);
-        this.autoImport = false;
+        this.autoImport = autoImport;
 
         /** @type {EntitySource[]} */
         this.entitySourceList = [];
@@ -31,9 +32,7 @@ export default class {
         }
 
         this.entityKeyValueMap = SheetUtil.getEntityKeyValue(entities, options);
-
         this.size = this.entityKeyValueMap.size;
-        this.has = this.entityKeyValueMap.has;
     }
 
     /**
@@ -48,8 +47,39 @@ export default class {
         return entitySource.getEntities();
     }
 
-    set(key, value) {
-        
+    /**
+     * put
+     * @param {string} key 
+     * @param {string} value 
+     */
+    put(key, value) {
+        if (this.has(key)) this.entityKeyValueMap.get(key).value = value;
+        else {
+            let entitySource;
+            if (this.autoImport && key.indexOf(".") !== -1
+                && [...this.entityKeyValueMap].filter(([k, v]) => k.startsWith(key.split(".")[0]))[0] !== undefined) {
+                
+                entitySource = [...this.entityKeyValueMap]
+                //@ts-ignore
+                    .filter(([k, v]) => k.startsWith(key.split(".")[0]))[0][1]._entitySource;
+                key = key.split(".")[1];
+
+            } else entitySource = this.entitySourceList[0];
+
+            this._packageKeyValue(key, value, entitySource);
+        }
+    }
+
+    /**
+     * packageKeyValue
+     * @param {string} key 
+     * @param {string} value 
+     * @param {EntitySource} entitySource
+     * @returns {EntityKeyValueWrapper}
+     */
+    _packageKeyValue(key, value, entitySource) {
+        let entities = entitySource.addNewRow([key, value]);
+        return new EntityKeyValueWrapper(entities[0], entities[1]);
     }
 
     /**
@@ -68,8 +98,8 @@ export default class {
         //TODO
     }
 
-    clear() {
-        //TODO
+    has(key) {
+        return this.entityKeyValueMap.has(key);
     }
 
     refresh() {
