@@ -117,6 +117,30 @@ export default class {
     }
 
     /**
+     * getSubKeyValue
+     * @param {string} name service name
+     * @returns {(key:string) => EntityKeyValueWrapper}
+     */
+    getSubKeyValue(name) {
+        let entityKeyValueMap = this.entityKeyValueMap
+        return (key) => {
+            return entityKeyValueMap.get(name + "." + key);
+        }
+    }
+
+    /**
+     * getSubKeyValue
+     * @param {string} name service name
+     * @returns {(key:string) => boolean}
+     */
+    hasSubKeyValue(name) {
+        let entityKeyValueMap = this.entityKeyValueMap
+        return (key) => {
+            return entityKeyValueMap.has(name + "." + key);
+        }
+    }
+
+    /**
      * prefixAndImportOptions
      * @param {GoogleAppsScript.Spreadsheet.Spreadsheet} spreadsheet
      * @returns {[GetEntityKeyValueOption]}
