@@ -16,9 +16,6 @@ requireService.addComponent("DriveService", driveService);
 let spreadsheetService = new SpreadsheetService();
 requireService.addComponent("SpreadsheetService", spreadsheetService);
 
-let modelService = new ModelService();
-requireService.addComponent("ModelService", modelService);
-
 let scriptService = new ScriptService();
 requireService.addComponent("ScriptService", scriptService);
 
@@ -30,5 +27,4 @@ FOSLogger.info("Initializing other dependencies");
 
 //Import Dependency Test
 import TestService from './service/TestService';
-import ModelService from './service/ModelService';
 let testService = new TestService();

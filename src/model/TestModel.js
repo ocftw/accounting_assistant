@@ -1,6 +1,6 @@
 //@ts-check
 
-const { AbstractModel, Model } = require("./AbstractModel");
+const { AbstractModel, Model } = require("../service/model/AbstractModel");
 
 @Model
 class TestModel extends AbstractModel {
@@ -16,6 +16,10 @@ class TestModel extends AbstractModel {
 
     static getName() {
         return "TestModel";
+    }
+
+    static getVersion() {
+        return 1;
     }
 }
 

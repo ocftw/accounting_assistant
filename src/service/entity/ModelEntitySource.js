@@ -1,6 +1,6 @@
 //@ts-check
 
-import { AbstractModel } from "../../model/AbstractModel";
+import { AbstractModel } from "../model/AbstractModel";
 import ColumnDefine from "../spreadsheet/ColumnDefine";
 import SheetDefine from "../spreadsheet/SheetDefine";
 import EntitySource from "./EntitySource";

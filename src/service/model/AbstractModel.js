@@ -1,15 +1,15 @@
 //@ts-check
-import EntityUnit from '../service/entity/EntityUnit';
-import ModelService from '../service/ModelService'
+import EntityUnit from '../entity/EntityUnit';
+import EntityService from '../EntityService';
 
 /**
  * Model
  * @param {typeof AbstractModel} target 
  */
 function Model(target) {
-    /**@type {ModelService} */
-    let modelService = (FOSRequire("ModelService"));
-    modelService.addModel(target);
+    /**@type {EntityService} */
+    let entityService = (FOSRequire("EntityService"));
+    entityService.addModel(target);
 }
 
 class AbstractModel {
@@ -31,6 +31,13 @@ class AbstractModel {
      */
     static getName() {
         throw new Error("Method 'getName()' must be implemented.");
+    }
+
+    /**
+     * @returns {number}
+     */
+    static getVersion() {
+        throw new Error("Method 'getVersion()' must be implemented.");
     }
 
     /**
