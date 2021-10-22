@@ -1,27 +1,25 @@
 //@ts-check
-import ControllerService from '../service/ControllerService'
+import ScriptService from '../service/ScriptService'
+
+/**
+ * Script
+ * @param {typeof AbstractScript} target 
+ */
+function Script(target) {
+    /**@type {ScriptService} */
+    let scriptService = (FOSRequire("ScriptService"));
+    scriptService.addScript(target.getName(), target);
+}
 
 class AbstractScript {
     constructor() {
         if (this.constructor == AbstractScript) {
             throw new Error("Abstract classes can't be instantiated.");
         }
-
-        /**@type {ControllerService} controllerService */
-        this.controllerService = (/**@type {ControllerService} controllerService */FOSRequire("ControllerService"));
     }
 
     run() {
         throw new Error("Method 'run()' must be implemented.");
-    }
-
-    /**
-     * 
-     * @param {string} id 
-     * @param {?Map} parameterMap 
-     */
-    runController(id, parameterMap) {
-        this.controllerService.getControllerExecutor(id, parameterMap).execute();
     }
 
     /**
@@ -39,4 +37,4 @@ class AbstractScript {
     }
 }
 
-export {AbstractScript}
+export {AbstractScript, Script}

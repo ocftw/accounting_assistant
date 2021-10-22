@@ -11,7 +11,7 @@ export default class {
         this.verifyAndPutParameters();
         if (this.controllerClass.getType() === "Controller") this.loadDependency();
         this.logger.info("Starting " + this.controllerClass.getType().toLowerCase() + " executor: " + this.controllerClass.getName());
-        return this.controller.run();
+        return this.controller.run(this.parameterMap);
     }
 
     verifyAndPutParameters() {

@@ -1,6 +1,5 @@
 import v8n from 'v8n';
 import ParameterDefine from '../util/ParameterDefine'
-import FOSLogger from '../service/LoggerService';
 import { AbstractScript } from './AbstractScript';
 
 class TestScript extends AbstractScript {

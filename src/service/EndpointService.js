@@ -24,6 +24,7 @@ export default class extends AbstractService{
      * @param {string} source endpoint source name
      */
     call(id, parameterMap, source) {
+        parameterMap = new Map(Object.entries(parameterMap));
         this.config.session.source = source;
         
         if (id.startsWith("script:")) {
