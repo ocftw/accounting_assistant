@@ -10,6 +10,7 @@ class TestModel extends AbstractModel {
 
         /**@type {string} */
         this.name = null;
+        /**@type {number} */
         this.num = null;
         this.date = null;
     }

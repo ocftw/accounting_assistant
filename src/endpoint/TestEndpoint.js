@@ -182,9 +182,8 @@ global.testSortEmptyRowEntity = () => {
 global.testPutKeyValueSource = () => {
     let spreadsheet = SpreadsheetApp.openById("18olFYeiM-W-MpP8E_oHixS5R8IEsdgf1EroQPnWphag");
     let keyValueEntitySource = new KeyValueEntitySource(spreadsheet, "TestKeyValue", true);
-    console.log(keyValueEntitySource.get("sub1.test").toString());
-    console.log(keyValueEntitySource.get("sub2.test233").toString());
-    console.log(keyValueEntitySource.get("sys.env.name").toString());
+    console.log(keyValueEntitySource.get("sub1.test"));
+    console.log(keyValueEntitySource.get("sub2.test233"));
 
     keyValueEntitySource.put("PutKey", "PutValue");
     keyValueEntitySource.put("sub1.1PutKey", "PutValue");
@@ -197,6 +196,6 @@ global.testPutKeyValueSource = () => {
 global.testRemoveKeyValueSource = () => {
     let spreadsheet = SpreadsheetApp.openById("18olFYeiM-W-MpP8E_oHixS5R8IEsdgf1EroQPnWphag");
     let keyValueEntitySource = new KeyValueEntitySource(spreadsheet, "TestKeyValue", true);
-    keyValueEntitySource.delete("logzio.token");
+    keyValueEntitySource.delete("PutKey");
     keyValueEntitySource.refresh();
 }

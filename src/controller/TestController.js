@@ -1,7 +1,6 @@
 import { AbstractController } from './AbstractController';
 import v8n from 'v8n';
 import ParameterDefine from '../util/ParameterDefine'
-import FOSLogger from '../service/LoggerService';
 
 class TestController extends AbstractController {
 

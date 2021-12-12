@@ -1,7 +1,6 @@
 //@ts-check
 
 import Config from '../../Config';
-import LoggerService from '../LoggerService';
 
 export default class {
 
@@ -14,7 +13,6 @@ export default class {
         this.system = system;
         this.FOSConfig = FOSConfig;
     }
-
 
     /**
      * debug
@@ -60,7 +58,8 @@ export default class {
             session: this.FOSConfig.session.session,
             system: this.system,
             source: this.FOSConfig.session.source,
-            type: "Financial_Operating_System"
+            type: "Financial_Operating_System",
+            environment: this.FOSConfig.config.get("sys.env.name")
         };
 
         let options = {
@@ -70,6 +69,6 @@ export default class {
         };
 
         //@ts-ignore
-        UrlFetchApp.fetch('https://listener.logz.io:8071/?token=' + this.FOSConfig.config.get("logzio.token"), options);
+        // UrlFetchApp.fetch('https://listener.logz.io:8071/?token=' + this.FOSConfig.config.get("logzio.token"), options);
     }
 }

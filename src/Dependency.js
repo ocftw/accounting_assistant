@@ -1,6 +1,6 @@
 // import LoggerService from './service/LoggerService';
 import DriveService from './service/DriveService';
-import SpreadsheetService from './service/SpreadsheetService';
+import ModelService from './service/ModelService';
 import ScriptService from './service/ScriptService';
 import EndpointService from './service/EndpointService';
 
@@ -13,8 +13,8 @@ let requireService = FOSRequire("RequireService");
 let driveService = new DriveService();
 requireService.addComponent("DriveService", driveService);
 
-let spreadsheetService = new SpreadsheetService();
-requireService.addComponent("SpreadsheetService", spreadsheetService);
+let modelService = new ModelService();
+requireService.addComponent("ModelService", modelService);
 
 let scriptService = new ScriptService();
 requireService.addComponent("ScriptService", scriptService);
