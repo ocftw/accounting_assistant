@@ -1,0 +1,3 @@
+[submodule "src/module/PayBehalfToTransfer"]
+	path = src/module/PayBehalfToTransfer
+	url = git@github.com:ocftw/PayBehalfToTransfer.git
