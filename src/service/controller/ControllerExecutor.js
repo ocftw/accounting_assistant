@@ -16,7 +16,7 @@ export default class {
 
     verifyAndPutParameters() {
         if (this.controller.parameterDefineMap === undefined) return;
-        else if (this.parameterMap === undefined) {
+        else if (this.parameterMap === undefined || this.parameterMap === null) {
             this.logger.error("Missing controller parameters (no parameter)");
             throw new Error("Missing controller parameters (no parameter)");
         }

@@ -1,13 +1,15 @@
 //@ts-check
 
-import { AbstractModel } from "../model/AbstractModel";
+import {
+    AbstractModel
+} from "../model/AbstractModel";
 import ColumnDefine from "../spreadsheet/ColumnDefine";
 import SheetDefine from "../spreadsheet/SheetDefine";
 import EntitySource from "./EntitySource";
 import EntityUnit from "./EntityUnit";
 
-export default class extends EntitySource{
-    
+export default class extends EntitySource {
+
     /**
      * @param {typeof AbstractModel} modelClass
      * @param {GoogleAppsScript.Spreadsheet.Range} range
@@ -15,7 +17,7 @@ export default class extends EntitySource{
      */
     constructor(modelClass, range, sheetDefine) {
         super(range);
-        
+
         this.modelClass = modelClass;
 
         /** @type {SheetDefine} */
@@ -31,6 +33,65 @@ export default class extends EntitySource{
     }
 
     /**
+     * findBy
+     * @param {string} column 
+     * @param {string} value 
+     * @returns {AbstractModel[]}
+     */
+    findBy(column, value) {
+        /**@type {AbstractModel[]} */
+        let result = [];
+
+        this.getModels().forEach((abstractModel) => {
+            if (abstractModel[column] === value) result.push(abstractModel);
+        });
+
+        return result;
+    }
+
+    /**
+     * findByDate
+     * @param {string} column 
+     * @param {Date} date 
+     * @returns {AbstractModel[]}
+     */
+    findByDate(column, date) {
+        /**@type {AbstractModel[]} */
+        let result = [];
+
+        this.getModels().forEach((abstractModel) => {
+            if (typeof abstractModel[column].getTime === "function")
+                if (abstractModel[column].getTime() === date.getTime()) result.push(abstractModel);
+        });
+
+        return result;
+    }
+
+    /**
+     * findByDate
+     * @param {string} column 
+     * @param {number} year 2010
+     * @param {number} month 1 ~ 12
+     * @param {number} date 1 ~ 31
+     * @returns {AbstractModel[]}
+     */
+    findByYearMonthDate(column, year, month, date) {
+        /**@type {AbstractModel[]} */
+        let result = [];
+
+        this.getModels().forEach((abstractModel) => {
+            if (typeof abstractModel[column].getMonth === "function") {
+                if (abstractModel[column].getFullYear() === year &&
+                    (abstractModel[column].getMonth() + 1) === month &&
+                    (abstractModel[column].getDate() + 1) === date)
+                    result.push(abstractModel);
+            }
+        });
+
+        return result;
+    }
+
+    /**
      * translateColumn
      * @param {number} columnRow 
      * @param {ColumnDefine[]} columnDefines 
@@ -40,7 +101,7 @@ export default class extends EntitySource{
         /** @type {string[]} */
         let columns = [];
         let index = 0;
-        
+
         this.getEntities()[columnRow].forEach((entityValue) => {
             let flag = false;
             columnDefines.some((columnDefineValue) => {
@@ -70,10 +131,10 @@ export default class extends EntitySource{
         let models = [];
 
         let rowEntities = this.getEntities();
-        for (let i = dataStartRow; i < rowEntities.length; i++){
+        for (let i = dataStartRow; i < rowEntities.length; i++) {
             let model = new modelClass();
             let entities = rowEntities[i];
-            for (let columnIndex = 0; columnIndex < columns.length; columnIndex++){
+            for (let columnIndex = 0; columnIndex < columns.length; columnIndex++) {
                 let fieldName = columns[columnIndex];
                 if (fieldName === null) continue;
 
@@ -108,7 +169,7 @@ export default class extends EntitySource{
      */
     packageProxy(model) {
         let handler = {
-            set: function (obj, prop, value) {
+            set: function(obj, prop, value) {
                 if (obj[prop] instanceof EntityUnit) {
                     obj[prop].value = value;
                 } else {
@@ -118,13 +179,18 @@ export default class extends EntitySource{
                 return true;
             },
 
-            get: function (obj, prop) {
-                if (obj[prop] instanceof EntityUnit) {
-                    return obj[prop].value;
+            get: function(obj, prop) {
+                if (prop.startsWith("___")) {
+                    //@ts-ignore
+                    return obj[prop.split("___")[1]];
+                } else {
+                    if (obj[prop] instanceof EntityUnit) {
+                        return obj[prop].value;
+                    }
                 }
-            }
+            },
         };
-        
+
         return new Proxy(model, handler);
     }
 
