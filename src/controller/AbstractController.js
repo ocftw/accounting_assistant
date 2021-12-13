@@ -1,3 +1,17 @@
+import ControllerService from "../service/ControllerService";
+import Logger from "../service/logger/Logger";
+
+/**
+ * Controller
+ * @param {typeof AbstractController} target 
+ */
+function Controller(target) {
+    /**@type {ControllerService} */
+    let controllerService = (FOSRequire("ControllerService"));
+    controllerService.addController(target.getName(), target);
+}
+
+
 class AbstractController {
     constructor() {
         if (this.constructor == AbstractController) {
@@ -9,12 +23,22 @@ class AbstractController {
         throw new Error("Method 'run()' must be implemented.");
     }
 
+    /**
+     * @returns {Logger}
+     */
+    getLogger() {
+        FOSRequire("LoggerService").buildLogger(this.constructor.getName());
+    }
+
+    /**
+     * @returns {string}
+     */
     static getName() {
         throw new Error("Method 'getName()' must be implemented.");
     }
 
     /**
-     * @returns {string}
+     * @returns {string[]}
      */
     static getDependencies() {
         return "None";
@@ -28,4 +52,4 @@ class AbstractController {
     }
 }
 
-export {AbstractController}
+export { AbstractController, Controller }

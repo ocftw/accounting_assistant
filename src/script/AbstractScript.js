@@ -1,4 +1,5 @@
 //@ts-check
+import ControllerService from '../service/ControllerService';
 import ScriptService from '../service/ScriptService'
 
 /**
@@ -20,6 +21,17 @@ class AbstractScript {
 
     run() {
         throw new Error("Method 'run()' must be implemented.");
+    }
+
+    /**
+     * runController
+     * @param {string} id 
+     * @param {?Map} parameterMap 
+     */
+    runController(id, parameterMap) {
+        /**@type {ControllerService} */
+        let controllerService = (FOSRequire("ControllerService"));
+        return controllerService.getControllerExecutor(id, parameterMap).execute();
     }
 
     /**

@@ -24,14 +24,16 @@ export default class extends AbstractService{
      * @param {string} source endpoint source name
      */
     call(id, parameterMap, source) {
-        parameterMap = new Map(Object.entries(parameterMap));
+        if (typeof parameterMap !== "undefined" && parameterMap !== null)
+            parameterMap = new Map(Object.entries(parameterMap));
         this.config.session.source = source;
         
         if (id.startsWith("script:")) {
             id = id.substring(7);
             if (this.scriptService.hasScript(id)) {
                 let message = "Endpoint called the script: " + id
-                if (typeof parameterMap !== "undefined") message += " with parameters -> " + [...parameterMap.entries()]
+                if (typeof parameterMap !== "undefined" && parameterMap !== null)
+                    message += " with parameters -> " + [...parameterMap.entries()]
                 this.logger.debug(message);
                 return this.scriptService.getScriptExecutor(id, parameterMap).execute();
             }

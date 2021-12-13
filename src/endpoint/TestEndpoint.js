@@ -199,3 +199,7 @@ global.testRemoveKeyValueSource = () => {
     keyValueEntitySource.delete("PutKey");
     keyValueEntitySource.refresh();
 }
+
+global.testReadPayBefalf = () => {
+    FOSRequire("EndpointService").call("script:" + "PayBehalfToTransfer", null, "TestEndpoint");
+}
